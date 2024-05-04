@@ -8,6 +8,9 @@ export default {
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],
       },
+      width: {
+        sidebar: '348px',
+      },
     },
   },
   plugins: [],

@@ -1,3 +1,13 @@
+import {
+  AdjustmentsVerticalIcon,
+  ChartBarIcon,
+  ChartPieIcon,
+  CheckCircleIcon,
+  CheckIcon,
+  PuzzlePieceIcon,
+  QuestionMarkCircleIcon,
+  Squares2X2Icon,
+} from '@heroicons/react/24/outline';
 import { SidebarGroup } from './SidebarGroup';
 import { SidebarItem } from './SidebarItem';
 
@@ -35,29 +45,30 @@ export function Sidebar() {
   return (
     <nav className="h-full flex flex-col gap-2 w-sidebar p-4 border-r border-slate-300">
       <div className="flex flex-col gap-2 h-full">
-        <SidebarGroup groupName="Активные проекты">
+        <SidebarGroup groupName="Активные проекты" groupIcon={<PuzzlePieceIcon />}>
           {activeProjects.map(p => (
-            <SidebarItem key={p.href} href={p.href}>
-              {p.name}
-            </SidebarItem>
+            <SidebarItem
+              key={p.href}
+              href={p.href}
+              itemText={p.name}
+              itemIcon={<Squares2X2Icon />}
+            />
           ))}
         </SidebarGroup>
 
-        <SidebarGroup groupName="Завершенные проекты">
+        <SidebarGroup groupName="Завершенные проекты" groupIcon={<CheckCircleIcon />}>
           {finishedProjects.map(p => (
-            <SidebarItem key={p.href} href={p.href}>
-              {p.name}
-            </SidebarItem>
+            <SidebarItem key={p.href} href={p.href} itemText={p.name} itemIcon={<CheckIcon />} />
           ))}
         </SidebarGroup>
 
-        <SidebarGroup groupName="Аналитика">
-          <SidebarItem href="/analytics">Аналитика</SidebarItem>
+        <SidebarGroup groupName="Аналитика" groupIcon={<ChartPieIcon />}>
+          <SidebarItem href="/analytics" itemText="Аналитика" itemIcon={<ChartBarIcon />} />
         </SidebarGroup>
       </div>
 
-      <SidebarItem href="/settings">Настройки</SidebarItem>
-      <SidebarItem href="/help">Справка</SidebarItem>
+      <SidebarItem href="/settings" itemText="Настройки" itemIcon={<AdjustmentsVerticalIcon />} />
+      <SidebarItem href="/help" itemText="Справка" itemIcon={<QuestionMarkCircleIcon />} />
     </nav>
   );
 }

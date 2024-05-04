@@ -3,6 +3,7 @@ import '~/styles/globals.css';
 import { Inter } from 'next/font/google';
 import { type ReactNode } from 'react';
 import { TRPCReactProvider } from '~/trpc/react';
+import { Header } from './_components/header';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -18,9 +19,13 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="ru">
       <body className={`font-sans ${inter.variable}`}>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <TRPCReactProvider>
+          <Header />
+
+          <main>{children}</main>
+        </TRPCReactProvider>
       </body>
     </html>
   );

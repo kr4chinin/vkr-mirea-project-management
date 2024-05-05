@@ -21,6 +21,8 @@ export function AddProjectDialog() {
   const router = useRouter();
   const [name, setName] = useState('');
 
+  const [opened, setOpened] = useState(false);
+
   const createProject = api.project.create.useMutation({
     onSuccess: () => {
       setName('');
@@ -28,9 +30,11 @@ export function AddProjectDialog() {
     },
   });
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createProject.mutate({ name });
+    await createProject.mutateAsync({ name });
+
+    setOpened(false);
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -38,7 +42,7 @@ export function AddProjectDialog() {
   };
 
   return (
-    <Dialog>
+    <Dialog open={opened} onOpenChange={setOpened}>
       <DialogTrigger asChild>
         <Button className="flex items-center gap-2">
           <div className="flex h-[18px] w-[18px] shrink-0 content-center items-center">
@@ -61,7 +65,9 @@ export function AddProjectDialog() {
           </div>
 
           <DialogFooter>
-            <Button type="submit">Save changes</Button>
+            <Button type="submit" disabled={createProject.isPending}>
+              Создать проект
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

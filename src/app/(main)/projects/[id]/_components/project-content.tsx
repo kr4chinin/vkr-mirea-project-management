@@ -26,8 +26,8 @@ interface Props {
 const formSchema = z.object({
   name: z.string().min(1),
   description: z.string(),
-  startDate: z.date(),
-  endDate: z.date(),
+  startDate: z.date().optional(),
+  endDate: z.date().optional(),
 });
 
 export function ProjectContent(props: Props) {
@@ -51,14 +51,16 @@ export function ProjectContent(props: Props) {
     },
   });
 
-  const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    updateProject.mutate({
+  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+    await updateProject.mutateAsync({
       id: project.id,
       name: project.name,
       description: values.description,
       startDate: values.startDate,
       endDate: values.endDate,
     });
+
+    form.reset();
   };
 
   return (
@@ -119,7 +121,11 @@ export function ProjectContent(props: Props) {
           </div>
         </div>
 
-        <Button type="submit">Сохранить изменения</Button>
+        {form.formState.isDirty && (
+          <Button type="submit" disabled={updateProject.isPending}>
+            Сохранить изменения
+          </Button>
+        )}
       </form>
     </Form>
   );

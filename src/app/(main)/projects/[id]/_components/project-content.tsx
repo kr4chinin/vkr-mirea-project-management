@@ -121,11 +121,9 @@ export function ProjectContent(props: Props) {
           </div>
         </div>
 
-        {form.formState.isDirty && (
-          <Button type="submit" disabled={updateProject.isPending}>
-            Сохранить изменения
-          </Button>
-        )}
+        <Button className="w-fit" type="submit" disabled={updateProject.isPending}>
+          Сохранить изменения
+        </Button>
       </form>
     </Form>
   );

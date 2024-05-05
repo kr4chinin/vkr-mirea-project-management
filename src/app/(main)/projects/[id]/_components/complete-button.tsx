@@ -25,7 +25,11 @@ export function CompleteButton(props: Props) {
   };
 
   return (
-    <Button variant={isCompleted ? 'outline' : undefined} onClick={handleClick}>
+    <Button
+      variant={isCompleted ? 'outline' : undefined}
+      disabled={updateProjectCompleteStatus.isPending}
+      onClick={handleClick}
+    >
       {isCompleted ? 'Сделать активным' : 'Завершить проект'}
     </Button>
   );

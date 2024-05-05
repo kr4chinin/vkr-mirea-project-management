@@ -53,7 +53,7 @@ export function Sidebar(props: Props) {
           ))}
         </SidebarGroup>
 
-        <SidebarGroup groupName="Завершенные проекты" groupIcon={<CheckCircleIcon />}>
+        <SidebarGroup groupName="Завершенные проекты" groupIcon={<CheckCircleIcon />} defaultOpened>
           {finishedProjects.map(p => (
             <SidebarItem
               key={p.id}

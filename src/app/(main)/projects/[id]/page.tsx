@@ -5,6 +5,8 @@ import { CompleteButton } from './_components/complete-button';
 import { ProjectContent } from './_components/project-content';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { ProjectTasks } from './_components/project-tasks';
+import { ProjectTab } from '~/lib/models/ProjectTab';
+import { ProjectMonitoring } from './_components/project-monitoring';
 
 export default async function ProjectPage({ params: { id } }: { params: Params }) {
   const projectId = Number(id);
@@ -12,15 +14,16 @@ export default async function ProjectPage({ params: { id } }: { params: Params }
   const project = await api.project.getOne({ id: projectId });
 
   return (
-    <Tabs defaultValue="overview" className="flex-1 flex-col">
+    <Tabs defaultValue={ProjectTab.OVERVIEW} className="w-full flex-1 flex-col">
       <Subheader>
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-4">
             <h2 className="text-lg font-bold text-gray-800">{project.name}</h2>
 
             <TabsList>
-              <TabsTrigger value="overview">Обзор</TabsTrigger>
-              <TabsTrigger value="tasks">Задачи</TabsTrigger>
+              <TabsTrigger value={ProjectTab.OVERVIEW}>Обзор</TabsTrigger>
+              <TabsTrigger value={ProjectTab.TASKS}>Задачи</TabsTrigger>
+              <TabsTrigger value={ProjectTab.MONITORING}>Панель мониторинга</TabsTrigger>
             </TabsList>
           </div>
 
@@ -28,12 +31,16 @@ export default async function ProjectPage({ params: { id } }: { params: Params }
         </div>
       </Subheader>
 
-      <TabsContent value="overview">
+      <TabsContent value={ProjectTab.OVERVIEW}>
         <ProjectContent project={project} />
       </TabsContent>
 
-      <TabsContent value="tasks">
+      <TabsContent value={ProjectTab.TASKS}>
         <ProjectTasks projectId={projectId} />
+      </TabsContent>
+
+      <TabsContent value={ProjectTab.MONITORING}>
+        <ProjectMonitoring projectId={projectId} />
       </TabsContent>
     </Tabs>
   );

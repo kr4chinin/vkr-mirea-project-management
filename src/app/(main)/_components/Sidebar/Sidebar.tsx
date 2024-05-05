@@ -32,7 +32,7 @@ export function Sidebar(props: Props) {
   const finishedProjects = projects.filter(p => p.isCompleted);
 
   return (
-    <nav className="flex h-full w-sidebar flex-col gap-2 border-r border-slate-300 p-4">
+    <nav className="flex h-full w-sidebar shrink-0 flex-col gap-2 border-r border-slate-300 p-4">
       <div className="flex h-full flex-col gap-2">
         <AddProjectDialog />
 

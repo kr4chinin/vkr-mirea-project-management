@@ -59,8 +59,6 @@ export function ProjectContent(props: Props) {
       startDate: values.startDate,
       endDate: values.endDate,
     });
-
-    form.reset();
   };
 
   return (

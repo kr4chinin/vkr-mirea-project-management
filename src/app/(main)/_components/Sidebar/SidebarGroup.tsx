@@ -1,7 +1,7 @@
 'use client';
 
-import { ChevronDownIcon, PlusCircleIcon } from '@heroicons/react/24/outline';
-import { type ReactEventHandler, useState, type ReactNode } from 'react';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import { useState, type ReactNode } from 'react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '~/components/ui/collapsible';
 import { cn } from '~/lib/utils';
 
@@ -10,19 +10,13 @@ interface Props {
   children: ReactNode;
   groupIcon: ReactNode;
   defaultOpened?: boolean;
-  onAddClick?: () => void;
+  canAddProject?: boolean;
 }
 
 export function SidebarGroup(props: Props) {
-  const { groupName, children, groupIcon, defaultOpened = false, onAddClick } = props;
+  const { groupName, children, groupIcon, defaultOpened = false } = props;
 
   const [isOpened, setIsOpened] = useState(defaultOpened);
-
-  const handleAddClick: ReactEventHandler<HTMLDivElement> = e => {
-    e.stopPropagation();
-
-    onAddClick?.();
-  };
 
   return (
     <Collapsible open={isOpened} className="flex flex-col gap-2" onOpenChange={setIsOpened}>
@@ -37,15 +31,6 @@ export function SidebarGroup(props: Props) {
           </div>
 
           <div className="flex items-center gap-2">
-            {onAddClick && (
-              <div
-                className="flex h-[16px] w-[16px] shrink-0 content-center items-center"
-                onClick={handleAddClick}
-              >
-                <PlusCircleIcon />
-              </div>
-            )}
-
             <div
               className={cn(
                 'flex h-[16px] w-[16px] shrink-0 content-center items-center transition-all duration-200',

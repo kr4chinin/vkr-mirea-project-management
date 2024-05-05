@@ -12,6 +12,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { SidebarGroup } from './SidebarGroup';
 import { SidebarItem } from './SidebarItem';
+import { AddProjectDialog } from '../Project/AddProjectDialog';
 
 export function Sidebar() {
   const activeProjects = [
@@ -47,11 +48,13 @@ export function Sidebar() {
   return (
     <nav className="flex h-full w-sidebar flex-col gap-2 border-r border-slate-300 p-4">
       <div className="flex h-full flex-col gap-2">
+        <AddProjectDialog />
+
         <SidebarGroup
+          canAddProject
+          defaultOpened
           groupName="Активные проекты"
           groupIcon={<PuzzlePieceIcon />}
-          defaultOpened
-          onAddClick={() => console.log(1)}
         >
           {activeProjects.map(p => (
             <SidebarItem

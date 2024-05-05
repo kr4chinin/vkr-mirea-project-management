@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import { type ReactNode } from 'react';
 import { TRPCReactProvider } from '~/trpc/react';
 import { Header } from './_components/Header/Header';
+import HolyLoader from 'holy-loader';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -20,7 +21,9 @@ export const metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ru">
-      <body className={`font-sans ${inter.variable} flex flex-col h-dvh`}>
+      <body className={`font-sans ${inter.variable} flex h-dvh flex-col`}>
+        <HolyLoader color="#64748b" />
+
         <TRPCReactProvider>
           <Header />
 

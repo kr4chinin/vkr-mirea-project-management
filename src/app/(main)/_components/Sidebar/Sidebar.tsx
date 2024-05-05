@@ -1,3 +1,5 @@
+'use client';
+
 import {
   AdjustmentsVerticalIcon,
   ChartBarIcon,
@@ -45,7 +47,12 @@ export function Sidebar() {
   return (
     <nav className="flex h-full w-sidebar flex-col gap-2 border-r border-slate-300 p-4">
       <div className="flex h-full flex-col gap-2">
-        <SidebarGroup groupName="Активные проекты" groupIcon={<PuzzlePieceIcon />} defaultOpened>
+        <SidebarGroup
+          groupName="Активные проекты"
+          groupIcon={<PuzzlePieceIcon />}
+          defaultOpened
+          onAddClick={() => console.log(1)}
+        >
           {activeProjects.map(p => (
             <SidebarItem
               key={p.href}

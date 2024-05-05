@@ -1,7 +1,7 @@
 'use client';
 
-import { ChevronDownIcon } from '@heroicons/react/24/outline';
-import { useState, type ReactNode } from 'react';
+import { ChevronDownIcon, PlusCircleIcon } from '@heroicons/react/24/outline';
+import { type ReactEventHandler, useState, type ReactNode } from 'react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '~/components/ui/collapsible';
 import { cn } from '~/lib/utils';
 
@@ -10,12 +10,19 @@ interface Props {
   children: ReactNode;
   groupIcon: ReactNode;
   defaultOpened?: boolean;
+  onAddClick?: () => void;
 }
 
 export function SidebarGroup(props: Props) {
-  const { groupName, children, groupIcon, defaultOpened = false } = props;
+  const { groupName, children, groupIcon, defaultOpened = false, onAddClick } = props;
 
   const [isOpened, setIsOpened] = useState(defaultOpened);
+
+  const handleAddClick: ReactEventHandler<HTMLDivElement> = e => {
+    e.stopPropagation();
+
+    onAddClick?.();
+  };
 
   return (
     <Collapsible open={isOpened} className="flex flex-col gap-2" onOpenChange={setIsOpened}>
@@ -29,15 +36,26 @@ export function SidebarGroup(props: Props) {
             <p className="text-bold pt-[2px] text-base font-bold">{groupName}</p>
           </div>
 
-          <div
-            className={cn(
-              'flex h-[16px] w-[16px] shrink-0 content-center items-center transition-all duration-200',
-              {
-                'rotate-180': isOpened,
-              }
+          <div className="flex items-center gap-2">
+            {onAddClick && (
+              <div
+                className="flex h-[16px] w-[16px] shrink-0 content-center items-center"
+                onClick={handleAddClick}
+              >
+                <PlusCircleIcon />
+              </div>
             )}
-          >
-            <ChevronDownIcon strokeWidth={2} />
+
+            <div
+              className={cn(
+                'flex h-[16px] w-[16px] shrink-0 content-center items-center transition-all duration-200',
+                {
+                  'rotate-180': isOpened,
+                }
+              )}
+            >
+              <ChevronDownIcon strokeWidth={2} />
+            </div>
           </div>
         </div>
       </CollapsibleTrigger>

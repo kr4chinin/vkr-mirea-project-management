@@ -13,6 +13,7 @@ export default async function ProjectPage({ params: { id } }: { params: Params }
   const projectId = Number(id);
 
   const project = await api.project.getOne({ id: projectId });
+  const tasksCount = await api.task.getProjectTasksCount({ projectId });
 
   return (
     <Tabs defaultValue={ProjectTab.OVERVIEW} className="w-full flex-1 flex-col">
@@ -23,7 +24,7 @@ export default async function ProjectPage({ params: { id } }: { params: Params }
 
             <TabsList>
               <TabsTrigger value={ProjectTab.OVERVIEW}>Обзор</TabsTrigger>
-              <TabsTrigger value={ProjectTab.TASKS}>Задачи</TabsTrigger>
+              <TabsTrigger value={ProjectTab.TASKS}>Задачи ({tasksCount})</TabsTrigger>
               <TabsTrigger value={ProjectTab.MONITORING}>Панель мониторинга</TabsTrigger>
             </TabsList>
           </div>

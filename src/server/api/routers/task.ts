@@ -8,6 +8,12 @@ export const taskRouter = createTRPCRouter({
     });
   }),
 
+  getProjectTasksCount: publicProcedure
+    .input(z.object({ projectId: z.number() }))
+    .query(({ ctx, input }) => {
+      return ctx.db.task.count({ where: { projectId: input.projectId } });
+    }),
+
   createTask: publicProcedure
     .input(
       z.object({

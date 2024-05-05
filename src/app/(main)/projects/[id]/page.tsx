@@ -18,9 +18,9 @@ export default async function ProjectPage({ params: { id } }: { params: Params }
   return (
     <Tabs defaultValue={ProjectTab.OVERVIEW} className="w-full flex-1 flex-col">
       <Subheader>
-        <div className="flex items-center justify-between p-4">
+        <div className="flex items-center justify-between gap-4 p-4">
           <div className="flex items-center gap-4">
-            <H2>{project.name}</H2>
+            <H2 className="truncate">{project.name}</H2>
 
             <TabsList>
               <TabsTrigger value={ProjectTab.OVERVIEW}>Обзор</TabsTrigger>

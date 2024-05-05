@@ -19,8 +19,17 @@ export const projectRouter = createTRPCRouter({
   }),
 
   getOne: publicProcedure.input(z.object({ id: z.number() })).query(({ ctx, input }) => {
-    return ctx.db.project.findUnique({
+    return ctx.db.project.findUniqueOrThrow({
       where: { id: input.id },
     });
   }),
+
+  updateProjectCompleteStatus: publicProcedure
+    .input(z.object({ id: z.number(), isCompleted: z.boolean() }))
+    .mutation(({ ctx, input }) => {
+      return ctx.db.project.update({
+        where: { id: input.id },
+        data: { isCompleted: input.isCompleted },
+      });
+    }),
 });

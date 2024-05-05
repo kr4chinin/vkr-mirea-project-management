@@ -14,6 +14,7 @@ import { SidebarGroup } from './SidebarGroup';
 import { SidebarItem } from './SidebarItem';
 import { AddProjectDialog } from '../Project/AddProjectDialog';
 import { type Project } from '@prisma/client';
+import { useParams, usePathname } from 'next/navigation';
 
 interface Props {
   projects: Project[];
@@ -21,6 +22,11 @@ interface Props {
 
 export function Sidebar(props: Props) {
   const { projects } = props;
+
+  const { id } = useParams();
+  const pathname = usePathname();
+
+  const currentProjectId = Number(id);
 
   const activeProjects = projects.filter(p => !p.isCompleted);
   const finishedProjects = projects.filter(p => p.isCompleted);
@@ -42,6 +48,7 @@ export function Sidebar(props: Props) {
               itemText={p.name}
               href={`/projects/${p.id}`}
               itemIcon={<Squares2X2Icon />}
+              active={p.id === currentProjectId}
             />
           ))}
         </SidebarGroup>
@@ -53,17 +60,33 @@ export function Sidebar(props: Props) {
               itemText={p.name}
               itemIcon={<CheckIcon />}
               href={`/projects/${p.id}`}
+              active={p.id === currentProjectId}
             />
           ))}
         </SidebarGroup>
 
         <SidebarGroup groupName="Аналитика" groupIcon={<ChartPieIcon />} defaultOpened>
-          <SidebarItem href="/analytics" itemText="Аналитика" itemIcon={<ChartBarIcon />} />
+          <SidebarItem
+            href="/analytics"
+            itemText="Аналитика"
+            itemIcon={<ChartBarIcon />}
+            active={pathname === '/analytics'}
+          />
         </SidebarGroup>
       </div>
 
-      <SidebarItem href="/settings" itemText="Настройки" itemIcon={<AdjustmentsVerticalIcon />} />
-      <SidebarItem href="/help" itemText="Справка" itemIcon={<QuestionMarkCircleIcon />} />
+      <SidebarItem
+        href="/settings"
+        itemText="Настройки"
+        itemIcon={<AdjustmentsVerticalIcon />}
+        active={pathname === '/settings'}
+      />
+      <SidebarItem
+        href="/help"
+        itemText="Справка"
+        itemIcon={<QuestionMarkCircleIcon />}
+        active={pathname === '/help'}
+      />
     </nav>
   );
 }

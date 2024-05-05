@@ -2,7 +2,7 @@ import { type Params } from 'next/dist/shared/lib/router/utils/route-matcher';
 import { api } from '~/trpc/server';
 import { Subheader } from '../../_components/Subheader/Subheader';
 import { CompleteButton } from './_components/complete-button';
-import { ProjectDatesInfoBlock } from './_components/project-dates-info-block';
+import { ProjectContent } from './_components/project-content';
 
 export default async function ProjectPage({ params: { id } }: { params: Params }) {
   const projectId = Number(id);
@@ -19,13 +19,7 @@ export default async function ProjectPage({ params: { id } }: { params: Params }
         <CompleteButton id={projectId} isCompleted={project.isCompleted} />
       </div>
 
-      <div className="flex p-4">
-        <div className="flex flex-[0.5]">
-          <ProjectDatesInfoBlock createdAt={project.createdAt} />
-        </div>
-
-        <div className="flex flex-[0.5]"></div>
-      </div>
+      <ProjectContent project={project} />
     </div>
   );
 }

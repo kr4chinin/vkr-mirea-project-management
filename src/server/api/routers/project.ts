@@ -24,6 +24,28 @@ export const projectRouter = createTRPCRouter({
     });
   }),
 
+  updateProject: publicProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        name: z.string().optional(),
+        description: z.string().optional(),
+        startDate: z.date().optional(),
+        endDate: z.date().optional(),
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.db.project.update({
+        where: { id: input.id },
+        data: {
+          name: input.name,
+          description: input.description,
+          startDate: input.startDate,
+          endDate: input.endDate,
+        },
+      });
+    }),
+
   updateProjectCompleteStatus: publicProcedure
     .input(z.object({ id: z.number(), isCompleted: z.boolean() }))
     .mutation(({ ctx, input }) => {

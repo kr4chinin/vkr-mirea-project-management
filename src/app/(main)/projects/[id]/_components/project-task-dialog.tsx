@@ -100,8 +100,12 @@ export function ProjectTaskDialog(props: Props) {
 
       <DialogContent className="max-w-[540px]">
         <DialogHeader>
-          <DialogTitle>Создайте задачу</DialogTitle>
-          <DialogDescription>Создайте задачу в вашем проекте</DialogDescription>
+          <DialogTitle>{task ? 'Внесите изменения в задачу' : 'Создайте задачу'}</DialogTitle>
+          <DialogDescription>
+            {task
+              ? 'Вы находитесь в режиме редактирования задачи'
+              : 'Создайте задачу в вашем проекте'}
+          </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>

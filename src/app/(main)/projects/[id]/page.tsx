@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { ProjectTasks } from './_components/project-tasks';
 import { ProjectTab } from '~/lib/models/ProjectTab';
 import { ProjectMonitoring } from './_components/project-monitoring';
+import { H2 } from '~/components/ui/typography/h2';
 
 export default async function ProjectPage({ params: { id } }: { params: Params }) {
   const projectId = Number(id);
@@ -18,7 +19,7 @@ export default async function ProjectPage({ params: { id } }: { params: Params }
       <Subheader>
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-4">
-            <h2 className="text-lg font-bold text-gray-800">{project.name}</h2>
+            <H2>{project.name}</H2>
 
             <TabsList>
               <TabsTrigger value={ProjectTab.OVERVIEW}>Обзор</TabsTrigger>

@@ -3,7 +3,7 @@ interface Props {
   value: number;
 }
 
-export function ProjectMonitoringInfoBlock(props: Props) {
+export function MonitoringInfoBlock(props: Props) {
   const { title, value } = props;
 
   return (

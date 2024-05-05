@@ -10,16 +10,15 @@ import {
   QuestionMarkCircleIcon,
   Squares2X2Icon,
 } from '@heroicons/react/24/outline';
-import { SidebarGroup } from './SidebarGroup';
-import { SidebarItem } from './SidebarItem';
-import { AddProjectDialog } from '../Project/AddProjectDialog';
+import { SidebarGroup } from './sidebar-group';
+import { SidebarItem } from './sidebar-item';
+import { AddProjectDialog } from './add-project-dialog';
 import { type Project } from '@prisma/client';
 import { useParams, usePathname } from 'next/navigation';
 
 interface Props {
   projects: Project[];
 }
-
 export function Sidebar(props: Props) {
   const { projects } = props;
 

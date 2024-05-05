@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react';
-import { Sidebar } from './_components/Sidebar/Sidebar';
+import { Sidebar } from './_components/sidebar';
 import { api } from '~/trpc/server';
 
 export default async function MainLayout({ children }: { children: ReactNode }) {

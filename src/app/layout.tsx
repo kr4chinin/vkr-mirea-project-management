@@ -3,7 +3,7 @@ import '~/styles/globals.css';
 import { Inter } from 'next/font/google';
 import { type ReactNode } from 'react';
 import { TRPCReactProvider } from '~/trpc/react';
-import { Header } from './_components/Header/Header';
+import { Header } from './_components/header';
 import HolyLoader from 'holy-loader';
 import { Toaster } from 'react-hot-toast';
 

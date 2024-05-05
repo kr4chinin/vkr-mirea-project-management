@@ -1,6 +1,6 @@
 import { type Params } from 'next/dist/shared/lib/router/utils/route-matcher';
 import { api } from '~/trpc/server';
-import { Subheader } from '../../_components/Subheader/Subheader';
+import { Subheader } from '../../_components/subheader';
 import { CompleteButton } from './_components/complete-button';
 import { ProjectContent } from './_components/project-content';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';

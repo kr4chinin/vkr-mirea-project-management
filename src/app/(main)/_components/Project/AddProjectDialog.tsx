@@ -1,4 +1,8 @@
+'use client';
+
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
+import { useRouter } from 'next/navigation';
+import { type FormEvent, useState, type ChangeEvent } from 'react';
 import { Button } from '~/components/ui/button';
 import {
   Dialog,
@@ -11,8 +15,28 @@ import {
 } from '~/components/ui/dialog';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
+import { api } from '~/trpc/react';
 
 export function AddProjectDialog() {
+  const router = useRouter();
+  const [name, setName] = useState('');
+
+  const createProject = api.project.create.useMutation({
+    onSuccess: () => {
+      setName('');
+      router.refresh();
+    },
+  });
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    createProject.mutate({ name });
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -30,16 +54,16 @@ export function AddProjectDialog() {
           <DialogDescription>Пожалуйста, введите название проекта</DialogDescription>
         </DialogHeader>
 
-        <form className="grid gap-4 py-4" onSubmit={e => e.preventDefault()}>
+        <form className="grid gap-4 py-4" onSubmit={handleSubmit}>
           <div className="grid grid-cols-3 items-center gap-4">
             <Label htmlFor="name">Название проекта</Label>
-            <Input id="name" className="col-span-3" />
+            <Input value={name} id="name" className="col-span-3" onChange={handleChange} />
           </div>
-        </form>
 
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter>
+          <DialogFooter>
+            <Button type="submit">Save changes</Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );

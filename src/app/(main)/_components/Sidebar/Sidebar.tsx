@@ -13,37 +13,17 @@ import {
 import { SidebarGroup } from './SidebarGroup';
 import { SidebarItem } from './SidebarItem';
 import { AddProjectDialog } from '../Project/AddProjectDialog';
+import { type Project } from '@prisma/client';
 
-export function Sidebar() {
-  const activeProjects = [
-    {
-      name: 'Активный проект 1',
-      href: '/projects/1',
-    },
-    {
-      name: 'Активный проект 2',
-      href: '/projects/2',
-    },
-    {
-      name: 'Активный проект 3',
-      href: '/projects/3',
-    },
-    {
-      name: 'Активный проект 4',
-      href: '/projects/4',
-    },
-  ];
+interface Props {
+  projects: Project[];
+}
 
-  const finishedProjects = [
-    {
-      name: 'Завершенный проект 1',
-      href: '/projects/5',
-    },
-    {
-      name: 'Завершенный проект 2',
-      href: '/projects/6',
-    },
-  ];
+export function Sidebar(props: Props) {
+  const { projects } = props;
+
+  const activeProjects = projects.filter(p => !p.isCompleted);
+  const finishedProjects = projects.filter(p => p.isCompleted);
 
   return (
     <nav className="flex h-full w-sidebar flex-col gap-2 border-r border-slate-300 p-4">
@@ -58,9 +38,9 @@ export function Sidebar() {
         >
           {activeProjects.map(p => (
             <SidebarItem
-              key={p.href}
-              href={p.href}
+              key={p.id}
               itemText={p.name}
+              href={`/projects/${p.id}`}
               itemIcon={<Squares2X2Icon />}
             />
           ))}
@@ -68,7 +48,12 @@ export function Sidebar() {
 
         <SidebarGroup groupName="Завершенные проекты" groupIcon={<CheckCircleIcon />}>
           {finishedProjects.map(p => (
-            <SidebarItem key={p.href} href={p.href} itemText={p.name} itemIcon={<CheckIcon />} />
+            <SidebarItem
+              key={p.id}
+              itemText={p.name}
+              itemIcon={<CheckIcon />}
+              href={`/projects/${p.id}`}
+            />
           ))}
         </SidebarGroup>
 

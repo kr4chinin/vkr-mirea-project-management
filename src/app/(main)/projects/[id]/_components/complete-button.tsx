@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 import { Button } from '~/components/ui/button';
 import { api } from '~/trpc/react';
 
@@ -17,6 +18,8 @@ export function CompleteButton(props: Props) {
   const updateProjectCompleteStatus = api.project.updateProjectCompleteStatus.useMutation({
     onSuccess: () => {
       router.refresh();
+
+      toast.success('Статус проекта обновлен', { icon: '✅' });
     },
   });
 

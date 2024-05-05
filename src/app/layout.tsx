@@ -5,6 +5,7 @@ import { type ReactNode } from 'react';
 import { TRPCReactProvider } from '~/trpc/react';
 import { Header } from './_components/Header/Header';
 import HolyLoader from 'holy-loader';
+import { Toaster } from 'react-hot-toast';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -29,6 +30,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
           <main className="h-full">{children}</main>
         </TRPCReactProvider>
+
+        <Toaster position="top-right" reverseOrder={false} />
       </body>
     </html>
   );

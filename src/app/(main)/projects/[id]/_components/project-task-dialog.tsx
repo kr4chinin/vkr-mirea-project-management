@@ -5,6 +5,7 @@ import { type Task } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useState, type ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import * as z from 'zod';
 import { Button } from '~/components/ui/button';
 import { DatePicker } from '~/components/ui/date-picker';
@@ -49,12 +50,16 @@ export function ProjectTaskDialog(props: Props) {
   const createTask = api.task.createTask.useMutation({
     onSuccess: () => {
       router.refresh();
+
+      toast.success('Задача успешно создана', { icon: '💎' });
     },
   });
 
   const updateTask = api.task.updateTask.useMutation({
     onSuccess: () => {
       router.refresh();
+
+      toast.success('Задача успешно обновлена', { icon: '✏️' });
     },
   });
 

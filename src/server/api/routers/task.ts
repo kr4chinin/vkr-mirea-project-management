@@ -5,6 +5,7 @@ export const taskRouter = createTRPCRouter({
   getAll: publicProcedure.input(z.object({ projectId: z.number() })).query(({ ctx, input }) => {
     return ctx.db.task.findMany({
       where: { projectId: input.projectId },
+      orderBy: { createdAt: 'desc' },
     });
   }),
 

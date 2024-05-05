@@ -1,6 +1,7 @@
+import { formatDate } from 'date-fns';
 import { api } from '~/trpc/server';
 import { CreateProjectTaskDialog } from './create-project-task-dialog';
-import { formatDate } from 'date-fns';
+import { ProjectTaskDialog } from './project-task-dialog';
 
 interface Props {
   projectId: number;
@@ -12,21 +13,28 @@ export async function ProjectTasks(props: Props) {
   const tasks = await api.task.getAll({ projectId });
 
   return (
-    <div className="p-4 flex flex-col gap-4">
+    <div className="flex flex-col gap-4 p-4">
       <CreateProjectTaskDialog projectId={projectId} />
 
       <div className="flex flex-col gap-4">
-        {tasks.map(task => (
-          <div key={task.id} className="rounded-md border border-slate-300 p-2 text-gray-600">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <p className="text-base font-bold">{task.name}</p>
-              </div>
+        {tasks.map(t => (
+          <ProjectTaskDialog
+            task={t}
+            key={t.id}
+            projectId={projectId}
+            button={
+              <div className="rounded-md border border-slate-300 p-2 text-gray-600 transition-all duration-200 hover:cursor-pointer hover:bg-slate-100 active:bg-slate-200">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <p className="text-base font-bold">{t.name}</p>
+                  </div>
 
-              {task.startDate && <div>{formatDate(task.startDate, 'dd.MM.yyyy')}</div>}
-              {task.endDate && <div>{formatDate(task.endDate, 'dd.MM.yyyy')}</div>}
-            </div>
-          </div>
+                  {t.startDate && <div>{formatDate(t.startDate, 'dd.MM.yyyy')}</div>}
+                  {t.endDate && <div>{formatDate(t.endDate, 'dd.MM.yyyy')}</div>}
+                </div>
+              </div>
+            }
+          />
         ))}
       </div>
     </div>

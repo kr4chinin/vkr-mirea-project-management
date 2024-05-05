@@ -54,7 +54,7 @@ export function ProjectContent(props: Props) {
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     await updateProject.mutateAsync({
       id: project.id,
-      name: project.name,
+      name: values.name,
       description: values.description,
       startDate: values.startDate,
       endDate: values.endDate,

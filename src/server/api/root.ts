@@ -1,4 +1,5 @@
 import { projectRouter } from './routers/project';
+import { taskRouter } from './routers/task';
 import { createCallerFactory, createTRPCRouter } from './trpc';
 
 /**
@@ -8,6 +9,7 @@ import { createCallerFactory, createTRPCRouter } from './trpc';
  */
 export const appRouter = createTRPCRouter({
   project: projectRouter,
+  task: taskRouter,
 });
 
 // export type definition of API

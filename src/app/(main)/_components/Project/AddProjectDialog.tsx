@@ -48,7 +48,7 @@ export function AddProjectDialog() {
           <div className="flex h-[18px] w-[18px] shrink-0 content-center items-center">
             <PlusCircleIcon />
           </div>
-          Добавить проект
+          Создать проект
         </Button>
       </DialogTrigger>
 

@@ -13,9 +13,9 @@ export function SidebarItem(props: Props) {
   return (
     <Link
       href={href}
-      className="flex gap-2 items-center px-2 py-1 border text-gray-500 border-slate-200 rounded-md duration-200 hover:bg-slate-200 active:bg-slate-300"
+      className="flex items-center gap-2 rounded-md border border-slate-200 px-2 py-1 text-gray-500 transition-all duration-200 hover:bg-slate-200 active:bg-slate-300"
     >
-      <div className="w-[18px] h-[18px] flex items-center justify-center shrink-0">{itemIcon}</div>
+      <div className="flex h-[18px] w-[18px] shrink-0 items-center justify-center">{itemIcon}</div>
 
       {itemText}
     </Link>

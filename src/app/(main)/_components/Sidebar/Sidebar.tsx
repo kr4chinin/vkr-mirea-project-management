@@ -43,9 +43,9 @@ export function Sidebar() {
   ];
 
   return (
-    <nav className="h-full flex flex-col gap-2 w-sidebar p-4 border-r border-slate-300">
-      <div className="flex flex-col gap-2 h-full">
-        <SidebarGroup groupName="Активные проекты" groupIcon={<PuzzlePieceIcon />}>
+    <nav className="flex h-full w-sidebar flex-col gap-2 border-r border-slate-300 p-4">
+      <div className="flex h-full flex-col gap-2">
+        <SidebarGroup groupName="Активные проекты" groupIcon={<PuzzlePieceIcon />} defaultOpened>
           {activeProjects.map(p => (
             <SidebarItem
               key={p.href}
@@ -62,7 +62,7 @@ export function Sidebar() {
           ))}
         </SidebarGroup>
 
-        <SidebarGroup groupName="Аналитика" groupIcon={<ChartPieIcon />}>
+        <SidebarGroup groupName="Аналитика" groupIcon={<ChartPieIcon />} defaultOpened>
           <SidebarItem href="/analytics" itemText="Аналитика" itemIcon={<ChartBarIcon />} />
         </SidebarGroup>
       </div>

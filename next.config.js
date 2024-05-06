@@ -10,7 +10,7 @@ const config = {
     return [
       {
         source: '/',
-        destination: '/projects',
+        destination: '/sign-in',
         permanent: true,
       },
     ];

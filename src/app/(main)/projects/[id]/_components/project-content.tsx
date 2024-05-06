@@ -18,6 +18,7 @@ import {
 import { Textarea } from '~/components/ui/textarea';
 import { api } from '~/trpc/react';
 import { ProjectDatesInfoBlock } from './project-dates-info-block';
+import toast from 'react-hot-toast';
 
 interface Props {
   project: Project;
@@ -38,6 +39,8 @@ export function ProjectContent(props: Props) {
   const updateProject = api.project.updateProject.useMutation({
     onSuccess: () => {
       router.refresh();
+
+      toast.success('Проект успешно обновлен', { icon: '✏️' });
     },
   });
 

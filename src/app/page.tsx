@@ -1,3 +1,12 @@
+import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
+
 export default async function Home() {
-  return <div>Home page</div>;
+  const { userId } = auth();
+
+  if (userId) {
+    redirect('/projects');
+  } else {
+    redirect('/sign-in');
+  }
 }

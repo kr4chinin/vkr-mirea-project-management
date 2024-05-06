@@ -31,7 +31,7 @@ export function Header() {
       </Link>
 
       <div className="flex items-center gap-4">
-        {isSignedIn ? <SignOutButton /> : <SignInButton />}
+        {isSignedIn ? <SignOutButton redirectUrl="sign-in" /> : <SignInButton />}
 
         {user && (
           <div className="flex items-center gap-2">

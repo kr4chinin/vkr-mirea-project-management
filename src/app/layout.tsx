@@ -6,6 +6,8 @@ import { TRPCReactProvider } from '~/trpc/react';
 import { Header } from './_components/header';
 import HolyLoader from 'holy-loader';
 import { Toaster } from 'react-hot-toast';
+import { ClerkProvider } from '@clerk/nextjs';
+import { ruRU } from '@clerk/localizations';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -21,18 +23,20 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="ru">
-      <body className={`font-sans ${inter.variable} flex h-dvh flex-col`}>
-        <HolyLoader color="#64748b" />
+    <ClerkProvider localization={ruRU}>
+      <html lang="ru">
+        <body className={`font-sans ${inter.variable} flex h-dvh flex-col`}>
+          <HolyLoader color="#64748b" />
 
-        <TRPCReactProvider>
-          <Header />
+          <TRPCReactProvider>
+            <Header />
 
-          <main className="h-full">{children}</main>
-        </TRPCReactProvider>
+            <main className="h-full">{children}</main>
+          </TRPCReactProvider>
 
-        <Toaster position="top-right" reverseOrder={false} />
-      </body>
-    </html>
+          <Toaster position="top-right" reverseOrder={false} />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

@@ -2,9 +2,11 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type Project } from '@prisma/client';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { Button } from '~/components/ui/button';
+import { DatePicker } from '~/components/ui/date-picker';
 import {
   Form,
   FormControl,
@@ -14,11 +16,8 @@ import {
   FormMessage,
 } from '~/components/ui/form';
 import { Textarea } from '~/components/ui/textarea';
-import { ProjectDatesInfoBlock } from './project-dates-info-block';
 import { api } from '~/trpc/react';
-import { redirect, useRouter } from 'next/navigation';
-import { DatePicker } from '~/components/ui/date-picker';
-import { useUser } from '@clerk/nextjs';
+import { ProjectDatesInfoBlock } from './project-dates-info-block';
 
 interface Props {
   project: Project;
@@ -61,10 +60,6 @@ export function ProjectContent(props: Props) {
       endDate: values.endDate,
     });
   };
-
-  const { isSignedIn } = useUser();
-
-  if (!isSignedIn) redirect('/sign-in');
 
   return (
     <Form {...form}>

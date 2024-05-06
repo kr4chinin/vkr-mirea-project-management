@@ -1,6 +1,6 @@
 'use client';
 
-import { SignInButton, SignOutButton, useUser } from '@clerk/nextjs';
+import { SignOutButton, useUser } from '@clerk/nextjs';
 import { BellIcon, CubeIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { Avatar, AvatarFallback } from '~/components/ui/avatar';
@@ -31,7 +31,7 @@ export function Header() {
       </Link>
 
       <div className="flex items-center gap-4">
-        {isSignedIn ? <SignOutButton redirectUrl="sign-in" /> : <SignInButton />}
+        {isSignedIn && <SignOutButton redirectUrl="/sign-in" />}
 
         {user && (
           <div className="flex items-center gap-2">

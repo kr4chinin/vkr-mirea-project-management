@@ -11,6 +11,22 @@ const config = {
   ],
   prefix: '',
   theme: {
+    // shadcn collapsible open/close animation
+    // https://github.com/shadcn-ui/ui/issues/2053#issuecomment-1902542088
+    keyframes: {
+      'collapsible-down': {
+        from: { height: '0' },
+        to: { height: 'var(--radix-collapsible-content-height)' },
+      },
+      'collapsible-up': {
+        from: { height: 'var(--radix-collapsible-content-height)' },
+        to: { height: '0' },
+      },
+    },
+    animation: {
+      'collapsible-down': 'collapsible-down 0.2s ease-out',
+      'collapsible-up': 'collapsible-up 0.2s ease-out',
+    },
     container: {
       center: true,
       padding: '2rem',

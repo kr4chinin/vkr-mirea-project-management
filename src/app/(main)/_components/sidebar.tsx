@@ -15,6 +15,7 @@ import { SidebarItem } from './sidebar-item';
 import { AddProjectDialog } from './add-project-dialog';
 import { type Project } from '@prisma/client';
 import { useParams, usePathname } from 'next/navigation';
+import { AppRoutes, DynamicRoutePath, RoutePath } from '~/config/routeConfig';
 
 interface Props {
   projects: Project[];
@@ -45,9 +46,9 @@ export function Sidebar(props: Props) {
             <SidebarItem
               key={p.id}
               itemText={p.name}
-              href={`/projects/${p.id}`}
               itemIcon={<Squares2X2Icon />}
               active={p.id === currentProjectId}
+              href={DynamicRoutePath[AppRoutes.PROJECTS](p.id)}
             />
           ))}
         </SidebarGroup>
@@ -58,33 +59,33 @@ export function Sidebar(props: Props) {
               key={p.id}
               itemText={p.name}
               itemIcon={<CheckIcon />}
-              href={`/projects/${p.id}`}
               active={p.id === currentProjectId}
+              href={DynamicRoutePath[AppRoutes.PROJECTS](p.id)}
             />
           ))}
         </SidebarGroup>
 
         <SidebarGroup groupName="Аналитика" groupIcon={<ChartPieIcon />} defaultOpened>
           <SidebarItem
-            href="/analytics"
             itemText="Аналитика"
             itemIcon={<ChartBarIcon />}
-            active={pathname === '/analytics'}
+            href={RoutePath[AppRoutes.ANALYTICS]}
+            active={pathname === RoutePath[AppRoutes.ANALYTICS]}
           />
         </SidebarGroup>
       </div>
 
       <SidebarItem
-        href="/settings"
         itemText="Настройки"
+        href={RoutePath[AppRoutes.SETTINGS]}
         itemIcon={<AdjustmentsVerticalIcon />}
-        active={pathname === '/settings'}
+        active={pathname === RoutePath[AppRoutes.SETTINGS]}
       />
       <SidebarItem
-        href="/help"
         itemText="Справка"
+        href={RoutePath[AppRoutes.HELP]}
         itemIcon={<QuestionMarkCircleIcon />}
-        active={pathname === '/help'}
+        active={pathname === RoutePath[AppRoutes.HELP]}
       />
     </nav>
   );

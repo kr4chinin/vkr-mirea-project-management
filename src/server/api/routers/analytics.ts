@@ -1,7 +1,9 @@
 import { z } from 'zod';
 import { createTRPCRouter, publicProcedure } from '../trpc';
-import { differenceInDays } from 'date-fns';
+import { differenceInDays, format } from 'date-fns';
 import { clerkClient } from '@clerk/nextjs/server';
+import { ru } from 'date-fns/locale';
+import { type ProjectTasksBurndownData } from '~/lib/models/ProjectTasksBurndownData';
 
 export const analyticsRouter = createTRPCRouter({
   getProjectMonitoringStats: publicProcedure
@@ -95,4 +97,43 @@ export const analyticsRouter = createTRPCRouter({
 
     return result;
   }),
+
+  getProjectTasksBurndown: publicProcedure
+    .input(z.object({ projectId: z.number(), fromDate: z.date(), toDate: z.date() }))
+    .query(async ({ ctx, input }) => {
+      const tasks = await ctx.db.task.findMany({
+        where: {
+          projectId: input.projectId,
+          createdAt: { gte: input.fromDate, lte: input.toDate },
+        },
+        orderBy: { createdAt: 'asc' },
+      });
+      const burndownData: ProjectTasksBurndownData[] = [];
+
+      const currentDate = new Date(input.fromDate);
+
+      while (currentDate <= input.toDate) {
+        const monthTasks = tasks.filter(task => {
+          if (!task.completionDate) return false;
+
+          const taskCompletionDate = task.completionDate;
+
+          return (
+            taskCompletionDate.getMonth() === currentDate.getMonth() &&
+            taskCompletionDate.getFullYear() === currentDate.getFullYear()
+          );
+        });
+
+        const tasksCount = monthTasks.length;
+
+        burndownData.push({
+          name: format(currentDate, 'MMM yyyy', { locale: ru }),
+          total: tasksCount,
+        });
+
+        currentDate.setMonth(currentDate.getMonth() + 1);
+      }
+
+      return burndownData;
+    }),
 });

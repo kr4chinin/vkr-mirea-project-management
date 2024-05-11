@@ -145,8 +145,8 @@ export function ProjectTaskDialog(props: Props) {
         <Form {...form}>
           <form
             className="flex flex-col gap-4"
-            onSubmit={() => {
-              form.handleSubmit(handleSubmit);
+            onSubmit={async e => {
+              await form.handleSubmit(handleSubmit)(e);
 
               setOpened(false);
             }}

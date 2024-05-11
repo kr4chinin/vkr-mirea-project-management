@@ -1,8 +1,9 @@
 import { formatDate } from 'date-fns';
+import { cn } from '~/lib/utils';
 import { api } from '~/trpc/server';
 import { CreateProjectTaskDialog } from './create-project-task-dialog';
 import { ProjectTaskDialog } from './project-task-dialog';
-import { cn } from '~/lib/utils';
+import { H2 } from '~/components/ui/typography/h2';
 
 interface Props {
   projectId: number;
@@ -15,6 +16,8 @@ export async function ProjectTasks(props: Props) {
 
   return (
     <div className="flex flex-col gap-4 p-4">
+      <H2>Задачи</H2>
+
       <CreateProjectTaskDialog projectId={projectId} />
 
       <div className="flex flex-col gap-4">

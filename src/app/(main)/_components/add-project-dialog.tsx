@@ -1,7 +1,8 @@
 'use client';
 
+import { useUser } from '@clerk/nextjs';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { type FormEvent, useState, type ChangeEvent } from 'react';
 import toast from 'react-hot-toast';
 import { Button } from '~/components/ui/button';
@@ -16,11 +17,16 @@ import {
 } from '~/components/ui/dialog';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
+import { AppRoutes, RoutePath } from '~/config/routeConfig';
 import { api } from '~/trpc/react';
 
 export function AddProjectDialog() {
   const router = useRouter();
   const [name, setName] = useState('');
+
+  const { user } = useUser();
+
+  if (!user) redirect(RoutePath[AppRoutes.SIGN_IN]);
 
   const [opened, setOpened] = useState(false);
 
@@ -35,7 +41,7 @@ export function AddProjectDialog() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await createProject.mutateAsync({ name });
+    await createProject.mutateAsync({ name, createdBy: user.id });
 
     setOpened(false);
   };

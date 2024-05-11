@@ -1,8 +1,9 @@
 'use client';
 
+import { useUser } from '@clerk/nextjs';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type Task } from '@prisma/client';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { useState, type ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -27,6 +28,7 @@ import {
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
 import { Textarea } from '~/components/ui/textarea';
+import { AppRoutes, RoutePath } from '~/config/routeConfig';
 import { api } from '~/trpc/react';
 
 const formSchema = z.object({
@@ -46,6 +48,10 @@ export function ProjectTaskDialog(props: Props) {
   const { projectId, task, button } = props;
 
   const router = useRouter();
+
+  const { user } = useUser();
+
+  if (!user) redirect(RoutePath[AppRoutes.SIGN_IN]);
 
   const createTask = api.task.createTask.useMutation({
     onSuccess: () => {
@@ -88,6 +94,7 @@ export function ProjectTaskDialog(props: Props) {
       await createTask.mutateAsync({
         projectId,
         name: values.name,
+        createdBy: user.id,
         description: values.description,
         startDate: values.startDate,
         endDate: values.endDate,

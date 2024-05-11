@@ -3,11 +3,12 @@ import { createTRPCRouter, publicProcedure } from '../trpc';
 
 export const projectRouter = createTRPCRouter({
   create: publicProcedure
-    .input(z.object({ name: z.string().min(1) }))
+    .input(z.object({ createdBy: z.string().min(1), name: z.string().min(1) }))
     .mutation(async ({ ctx, input }) => {
       return ctx.db.project.create({
         data: {
           name: input.name,
+          createdBy: input.createdBy,
         },
       });
     }),

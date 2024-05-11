@@ -18,7 +18,8 @@ export const taskRouter = createTRPCRouter({
   createTask: publicProcedure
     .input(
       z.object({
-        name: z.string().min(1),
+        createdBy: z.string().min(1),
+        name: z.string().trim().min(1),
         description: z.string().optional(),
         startDate: z.date().optional(),
         endDate: z.date().optional(),
@@ -28,6 +29,8 @@ export const taskRouter = createTRPCRouter({
     .mutation(({ ctx, input }) => {
       return ctx.db.task.create({
         data: {
+          
+          createdBy: input.createdBy,
           name: input.name,
           description: input.description,
           startDate: input.startDate,

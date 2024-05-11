@@ -71,4 +71,10 @@ export const projectRouter = createTRPCRouter({
           : { isCompleted: input.isCompleted },
       });
     }),
+
+  getOverdueProjects: publicProcedure.query(({ ctx }) => {
+    return ctx.db.project.findMany({
+      where: { endDate: { lt: new Date() }, isCompleted: false },
+    });
+  }),
 });

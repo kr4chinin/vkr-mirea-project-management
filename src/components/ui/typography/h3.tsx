@@ -6,8 +6,8 @@ interface Props {
   className?: string;
 }
 
-export function H2(props: Props) {
+export function H3(props: Props) {
   const { children, className } = props;
 
-  return <h2 className={cn('text-xl font-bold text-gray-800', className)}>{children}</h2>;
+  return <h2 className={cn('text-lg font-bold text-gray-800', className)}>{children}</h2>;
 }

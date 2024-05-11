@@ -66,7 +66,9 @@ export const projectRouter = createTRPCRouter({
     .mutation(({ ctx, input }) => {
       return ctx.db.project.update({
         where: { id: input.id },
-        data: { isCompleted: input.isCompleted },
+        data: input.isCompleted
+          ? { isCompleted: input.isCompleted, isImportant: false }
+          : { isCompleted: input.isCompleted },
       });
     }),
 });

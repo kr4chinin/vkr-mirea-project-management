@@ -134,6 +134,8 @@ export const analyticsRouter = createTRPCRouter({
         currentDate.setMonth(currentDate.getMonth() + 1);
       }
 
-      return burndownData;
+      const hasData = burndownData.some(data => data.total > 0);
+
+      return hasData ? burndownData : [];
     }),
 });

@@ -1,7 +1,6 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -19,8 +18,6 @@ export async function UsersBreakdown() {
       <H3>Пользователи системы</H3>
 
       <Table>
-        <TableCaption>Общий отчет по деятельности пользователей</TableCaption>
-
         <TableHeader>
           <TableRow>
             <TableHead>Ответственный</TableHead>

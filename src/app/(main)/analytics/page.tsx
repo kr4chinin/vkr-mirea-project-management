@@ -1,6 +1,7 @@
 import { H2 } from '~/components/ui/typography/h2';
 import { AnalyticsHighlights } from './_components/analytics-highlights';
 import { OverdueProjects } from './_components/overdue-projects';
+import { UsersBreakdown } from './_components/users-breakdown';
 
 export default async function AnalyticsPage() {
   return (
@@ -10,6 +11,8 @@ export default async function AnalyticsPage() {
       <AnalyticsHighlights />
 
       <OverdueProjects />
+
+      <UsersBreakdown />
     </div>
   );
 }

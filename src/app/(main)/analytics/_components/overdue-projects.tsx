@@ -5,7 +5,7 @@ import { AppRoutes, DynamicRoutePath } from '~/config/routeConfig';
 import { api } from '~/trpc/server';
 
 export async function OverdueProjects() {
-  const overdueProjects = await api.project.getOverdueProjects();
+  const overdueProjects = await api.analytics.getOverdueProjects();
 
   return (
     <div className="flex flex-col gap-4">

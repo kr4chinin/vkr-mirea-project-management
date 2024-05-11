@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import * as z from 'zod';
-import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { Button } from '~/components/ui/button';
 import { DatePicker } from '~/components/ui/date-picker';
 import {
@@ -18,6 +17,7 @@ import {
   FormMessage,
 } from '~/components/ui/form';
 import { Textarea } from '~/components/ui/textarea';
+import { UserBlock } from '~/components/ui/user-block';
 import { api } from '~/trpc/react';
 import { ProjectDatesInfoBlock } from './project-dates-info-block';
 
@@ -99,16 +99,11 @@ export function ProjectContent(props: Props) {
                   <FormItem className="flex flex-col gap-1">
                     <FormLabel>Создатель проекта</FormLabel>
 
-                    <div className="flex items-center gap-2">
-                      <Avatar className="h-6 w-6">
-                        <AvatarImage src={creatorImageUrl} />
-                        <AvatarFallback>
-                          {creatorFirstName[0]}
-                          {creatorLastName[0]}
-                        </AvatarFallback>
-                      </Avatar>
-                      {creatorFirstName} {creatorLastName}
-                    </div>
+                    <UserBlock
+                      lastName={creatorLastName}
+                      imageUrl={creatorImageUrl}
+                      firstName={creatorFirstName}
+                    />
                   </FormItem>
                 )}
               />

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 import { differenceInDays } from 'date-fns';
+import { clerkClient } from '@clerk/nextjs/server';
 
 export const analyticsRouter = createTRPCRouter({
   getProjectMonitoringStats: publicProcedure
@@ -62,5 +63,36 @@ export const analyticsRouter = createTRPCRouter({
       averageDuration: await getProjectsAverageDuration(),
       completedCount: await ctx.db.project.count({ where: { isCompleted: true } }),
     };
+  }),
+
+  getOverdueProjects: publicProcedure.query(({ ctx }) => {
+    return ctx.db.project.findMany({
+      where: { endDate: { lt: new Date() }, isCompleted: false },
+    });
+  }),
+
+  getUsersBreakdown: publicProcedure.query(async ({ ctx }) => {
+    const users = await clerkClient.users.getUserList({ limit: 1000 });
+
+    const result = [];
+
+    for (const user of users.data) {
+      result.push({
+        user,
+        fullName: user.fullName,
+        openTasksCount: await ctx.db.task.count({
+          where: { createdBy: user.id, isCompleted: false },
+        }),
+        completedTasksCount: await ctx.db.task.count({
+          where: { createdBy: user.id, isCompleted: true },
+        }),
+        overdueTasksCount: await ctx.db.task.count({
+          where: { createdBy: user.id, endDate: { lt: new Date() }, isCompleted: false },
+        }),
+        projectsCount: await ctx.db.project.count({ where: { createdBy: user.id } }),
+      });
+    }
+
+    return result;
   }),
 });

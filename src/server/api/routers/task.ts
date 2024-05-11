@@ -29,7 +29,6 @@ export const taskRouter = createTRPCRouter({
     .mutation(({ ctx, input }) => {
       return ctx.db.task.create({
         data: {
-          
           createdBy: input.createdBy,
           name: input.name,
           description: input.description,

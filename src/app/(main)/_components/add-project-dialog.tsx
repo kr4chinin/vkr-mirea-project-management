@@ -26,8 +26,6 @@ export function AddProjectDialog() {
 
   const { user } = useUser();
 
-  if (!user) redirect(RoutePath[AppRoutes.SIGN_IN]);
-
   const [opened, setOpened] = useState(false);
 
   const createProject = api.project.create.useMutation({
@@ -41,6 +39,9 @@ export function AddProjectDialog() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    if (!user) redirect(RoutePath[AppRoutes.SIGN_IN]);
+
     await createProject.mutateAsync({ name, createdBy: user.id });
 
     setOpened(false);

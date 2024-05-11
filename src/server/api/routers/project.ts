@@ -15,7 +15,7 @@ export const projectRouter = createTRPCRouter({
 
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.db.project.findMany({
-      orderBy: { createdAt: 'desc' },
+      orderBy: [{ isImportant: 'desc' }, { createdAt: 'desc' }],
     });
   }),
 
@@ -31,6 +31,7 @@ export const projectRouter = createTRPCRouter({
         id: z.number(),
         name: z.string().optional(),
         description: z.string().optional(),
+        isImportant: z.boolean().optional(),
         startDate: z.date().optional(),
         endDate: z.date().optional(),
       })
@@ -40,9 +41,10 @@ export const projectRouter = createTRPCRouter({
         where: { id: input.id },
         data: {
           name: input.name,
-          description: input.description,
-          startDate: input.startDate,
           endDate: input.endDate,
+          startDate: input.startDate,
+          description: input.description,
+          isImportant: input.isImportant,
         },
       });
     }),

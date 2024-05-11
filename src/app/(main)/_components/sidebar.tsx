@@ -16,6 +16,7 @@ import { AddProjectDialog } from './add-project-dialog';
 import { type Project } from '@prisma/client';
 import { useParams, usePathname } from 'next/navigation';
 import { AppRoutes, DynamicRoutePath, RoutePath } from '~/config/routeConfig';
+import { ProjectImportantMark } from './project-important-mark';
 
 interface Props {
   projects: Project[];
@@ -49,6 +50,7 @@ export function Sidebar(props: Props) {
               itemIcon={<Squares2X2Icon />}
               active={p.id === currentProjectId}
               href={DynamicRoutePath[AppRoutes.PROJECTS](p.id)}
+              controls={<ProjectImportantMark projectId={p.id} isImportant={p.isImportant} />}
             />
           ))}
         </SidebarGroup>

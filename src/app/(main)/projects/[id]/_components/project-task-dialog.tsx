@@ -51,8 +51,6 @@ export function ProjectTaskDialog(props: Props) {
 
   const { user } = useUser();
 
-  if (!user) redirect(RoutePath[AppRoutes.SIGN_IN]);
-
   const createTask = api.task.createTask.useMutation({
     onSuccess: () => {
       router.refresh();
@@ -91,6 +89,8 @@ export function ProjectTaskDialog(props: Props) {
         endDate: values.endDate,
       });
     } else {
+      if (!user) redirect(RoutePath[AppRoutes.SIGN_IN]);
+
       await createTask.mutateAsync({
         projectId,
         name: values.name,

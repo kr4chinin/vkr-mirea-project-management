@@ -1,3 +1,4 @@
+import { Badge } from '~/components/ui/badge';
 import {
   Table,
   TableBody,
@@ -14,8 +15,10 @@ export async function UsersBreakdown() {
   const usersBreakdown = await api.analytics.getUsersBreakdown();
 
   return (
-    <div className="flex flex-col gap-4">
-      <H3>Пользователи системы</H3>
+    <div className="flex flex-col gap-6">
+      <H3 className="flex items-center gap-2">
+        Пользователи системы <Badge>{usersBreakdown.length}</Badge>
+      </H3>
 
       <Table>
         <TableHeader>

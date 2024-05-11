@@ -1,5 +1,6 @@
 import { Squares2X2Icon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
+import { Badge } from '~/components/ui/badge';
 import { H3 } from '~/components/ui/typography/h3';
 import { AppRoutes, DynamicRoutePath } from '~/config/routeConfig';
 import { api } from '~/trpc/server';
@@ -8,8 +9,10 @@ export async function OverdueProjects() {
   const overdueProjects = await api.analytics.getOverdueProjects();
 
   return (
-    <div className="flex flex-col gap-4">
-      <H3>Проекты, отстающие от графика</H3>
+    <div className="flex flex-col gap-6">
+      <H3 className="flex items-center gap-2">
+        Проекты, отстающие от графика <Badge>{overdueProjects.length}</Badge>
+      </H3>
 
       <div className="flex flex-wrap items-center gap-4">
         {overdueProjects.length > 0

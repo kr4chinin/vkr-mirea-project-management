@@ -5,7 +5,7 @@ import { UsersBreakdown } from './_components/users-breakdown';
 
 export default async function AnalyticsPage() {
   return (
-    <div className="flex flex-col gap-4 p-4">
+    <div className="flex flex-col gap-6 p-4">
       <H2>Отчеты</H2>
 
       <AnalyticsHighlights />

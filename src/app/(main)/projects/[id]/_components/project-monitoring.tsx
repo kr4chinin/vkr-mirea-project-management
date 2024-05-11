@@ -1,5 +1,6 @@
 import { MonitoringInfoBlock } from '~/components/ui/monitoring-info-block';
 import { api } from '~/trpc/server';
+import { ProjectTasksBurndown } from './project-tasks-burndown';
 
 interface Props {
   projectId: number;
@@ -22,6 +23,8 @@ export async function ProjectMonitoring(props: Props) {
 
         <MonitoringInfoBlock title="Задач без даты" value={withoutDateCount} />
       </div>
+
+      <ProjectTasksBurndown />
     </div>
   );
 }

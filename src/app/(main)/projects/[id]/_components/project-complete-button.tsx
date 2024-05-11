@@ -10,7 +10,7 @@ interface Props {
   isCompleted: boolean;
 }
 
-export function CompleteButton(props: Props) {
+export function ProjectCompleteButton(props: Props) {
   const { id, isCompleted } = props;
 
   const router = useRouter();

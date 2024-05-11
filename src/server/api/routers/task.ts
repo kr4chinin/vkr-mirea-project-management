@@ -1,3 +1,4 @@
+import { TaskStatus } from '@prisma/client';
 import { z } from 'zod';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 
@@ -47,6 +48,7 @@ export const taskRouter = createTRPCRouter({
         description: z.string().optional(),
         startDate: z.date().optional(),
         endDate: z.date().optional(),
+        status: z.nativeEnum(TaskStatus).optional(),
       })
     )
     .mutation(({ ctx, input }) => {
@@ -54,9 +56,25 @@ export const taskRouter = createTRPCRouter({
         where: { id: input.id },
         data: {
           name: input.name,
-          description: input.description,
-          startDate: input.startDate,
+          status: input.status,
           endDate: input.endDate,
+          startDate: input.startDate,
+          description: input.description,
+          isCompleted: input.status === TaskStatus.DONE,
+          completionDate: input.status === TaskStatus.DONE ? new Date() : null,
+        },
+      });
+    }),
+
+  changeTaskIsCompletedState: publicProcedure
+    .input(z.object({ id: z.number(), isCompleted: z.boolean() }))
+    .mutation(({ ctx, input }) => {
+      return ctx.db.task.update({
+        where: { id: input.id },
+        data: {
+          isCompleted: input.isCompleted,
+          completionDate: input.isCompleted ? new Date() : null,
+          status: input.isCompleted ? TaskStatus.DONE : TaskStatus.IN_PROGRESS,
         },
       });
     }),

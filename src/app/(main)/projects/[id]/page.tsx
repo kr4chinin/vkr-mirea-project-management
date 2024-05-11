@@ -1,7 +1,7 @@
 import { type Params } from 'next/dist/shared/lib/router/utils/route-matcher';
 import { api } from '~/trpc/server';
 import { Subheader } from '../../_components/subheader';
-import { CompleteButton } from './_components/complete-button';
+import { ProjectCompleteButton } from './_components/project-complete-button';
 import { ProjectContent } from './_components/project-content';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { ProjectTasks } from './_components/project-tasks';
@@ -32,7 +32,7 @@ export default async function ProjectPage({ params: { id } }: { params: Params }
             </TabsList>
           </div>
 
-          <CompleteButton id={projectId} isCompleted={project.isCompleted} />
+          <ProjectCompleteButton id={projectId} isCompleted={project.isCompleted} />
         </div>
       </Subheader>
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { useUser } from '@clerk/nextjs';
+import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type Task } from '@prisma/client';
 import { redirect, useRouter } from 'next/navigation';
@@ -29,6 +30,7 @@ import {
 import { Input } from '~/components/ui/input';
 import { Textarea } from '~/components/ui/textarea';
 import { AppRoutes, RoutePath } from '~/config/routeConfig';
+import { cn } from '~/lib/utils';
 import { api } from '~/trpc/react';
 
 const formSchema = z.object({
@@ -56,6 +58,19 @@ export function ProjectTaskDialog(props: Props) {
       router.refresh();
 
       toast.success('Задача успешно создана', { icon: '💎' });
+    },
+  });
+
+  const changeTaskIsCompleteState = api.task.changeTaskIsCompletedState.useMutation({
+    onSuccess: () => {
+      router.refresh();
+
+      toast.success(
+        task?.isCompleted ? 'Задача успешно сделана активной' : 'Задача успешно выполнена',
+        {
+          icon: task?.isCompleted ? '✅' : '🎉',
+        }
+      );
     },
   });
 
@@ -102,6 +117,13 @@ export function ProjectTaskDialog(props: Props) {
     }
 
     form.reset();
+  };
+
+  const handleChangeTaskIsCompleteState = async () => {
+    if (!task) throw new Error(`Task does not exist yet, failed to change isComplete state`);
+
+    await handleSubmit(form.getValues());
+    await changeTaskIsCompleteState.mutateAsync({ id: task.id, isCompleted: !task.isCompleted });
 
     setOpened(false);
   };
@@ -121,7 +143,14 @@ export function ProjectTaskDialog(props: Props) {
         </DialogHeader>
 
         <Form {...form}>
-          <form className="flex flex-col gap-4" onSubmit={form.handleSubmit(handleSubmit)}>
+          <form
+            className="flex flex-col gap-4"
+            onSubmit={() => {
+              form.handleSubmit(handleSubmit);
+
+              setOpened(false);
+            }}
+          >
             <FormField
               name="name"
               control={form.control}
@@ -184,9 +213,31 @@ export function ProjectTaskDialog(props: Props) {
               )}
             />
 
-            <Button type="submit" disabled={createTask.isPending}>
-              {task ? 'Сохранить задачу' : 'Создать задачу'}
-            </Button>
+            <div className="flex items-center gap-2">
+              {task && (
+                <Button
+                  type="button"
+                  variant={task.isCompleted ? 'outline' : 'default'}
+                  className={cn({
+                    'flex flex-1 items-center gap-2 bg-green-600 hover:bg-green-700 active:bg-green-600':
+                      !task.isCompleted,
+                  })}
+                  onClick={handleChangeTaskIsCompleteState}
+                >
+                  {!task.isCompleted && (
+                    <div className="flex h-[20px] w-[20px] shrink-0 items-center justify-center">
+                      <CheckCircleIcon stroke="white" />
+                    </div>
+                  )}
+
+                  {task.isCompleted ? 'Сделать активной' : 'Завершить задачу'}
+                </Button>
+              )}
+
+              <Button className="flex-1" type="submit" disabled={createTask.isPending}>
+                {task ? 'Сохранить задачу' : 'Создать задачу'}
+              </Button>
+            </div>
           </form>
         </Form>
       </DialogContent>

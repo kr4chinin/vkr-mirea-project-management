@@ -46,7 +46,7 @@ model Task {
   startDate   DateTime?
   endDate     DateTime?
   projectId   Int
-  plannedTime Int
+  plannedTime Int?
   status      TaskStatus @default(PLAN)
 
   project Project   @relation("project_tasks", fields: [projectId], references: [id])

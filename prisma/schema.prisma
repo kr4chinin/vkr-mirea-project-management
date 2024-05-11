@@ -36,18 +36,19 @@ model Project {
 }
 
 model Task {
-  id          Int        @id @default(autoincrement())
-  name        String
-  description String?
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  isCompleted Boolean    @default(false)
-  createdBy   String
-  startDate   DateTime?
-  endDate     DateTime?
-  projectId   Int
-  plannedTime Int?
-  status      TaskStatus @default(PLAN)
+  id             Int        @id @default(autoincrement())
+  name           String
+  description    String?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  isCompleted    Boolean    @default(false)
+  createdBy      String
+  startDate      DateTime?
+  endDate        DateTime?
+  projectId      Int
+  plannedTime    Int?
+  completionDate DateTime?
+  status         TaskStatus @default(PLAN)
 
   project Project   @relation("project_tasks", fields: [projectId], references: [id])
   Subtask Subtask[]

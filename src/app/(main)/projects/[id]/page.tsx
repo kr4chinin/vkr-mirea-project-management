@@ -13,6 +13,7 @@ export default async function ProjectPage({ params: { id } }: { params: Params }
   const projectId = Number(id);
 
   const project = await api.project.getOne({ id: projectId });
+  const projectCreator = await api.project.getProjectCreator({ id: projectId });
   const tasksCount = await api.task.getProjectTasksCount({ projectId });
 
   return (
@@ -34,7 +35,12 @@ export default async function ProjectPage({ params: { id } }: { params: Params }
       </Subheader>
 
       <TabsContent value={ProjectTab.OVERVIEW}>
-        <ProjectContent project={project} />
+        <ProjectContent
+          project={project}
+          creatorImageUrl={projectCreator.imageUrl}
+          creatorLastName={projectCreator.lastName ?? 'Неизвестно'}
+          creatorFirstName={projectCreator.firstName ?? 'Неизвестно'}
+        />
       </TabsContent>
 
       <TabsContent value={ProjectTab.TASKS}>

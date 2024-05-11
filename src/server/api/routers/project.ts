@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { createTRPCRouter, publicProcedure } from '../trpc';
+import { clerkClient } from '@clerk/nextjs/server';
 
 export const projectRouter = createTRPCRouter({
   create: publicProcedure
@@ -18,6 +19,17 @@ export const projectRouter = createTRPCRouter({
       orderBy: [{ isImportant: 'desc' }, { createdAt: 'desc' }],
     });
   }),
+
+  getProjectCreator: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .query(async ({ ctx, input }) => {
+      const { createdBy } = await ctx.db.project.findUniqueOrThrow({
+        where: { id: input.id },
+        select: { createdBy: true },
+      });
+
+      return clerkClient.users.getUser(createdBy);
+    }),
 
   getOne: publicProcedure.input(z.object({ id: z.number() })).query(({ ctx, input }) => {
     return ctx.db.project.findUniqueOrThrow({

@@ -4,7 +4,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { type Project } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import * as z from 'zod';
+import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { Button } from '~/components/ui/button';
 import { DatePicker } from '~/components/ui/date-picker';
 import {
@@ -18,10 +20,12 @@ import {
 import { Textarea } from '~/components/ui/textarea';
 import { api } from '~/trpc/react';
 import { ProjectDatesInfoBlock } from './project-dates-info-block';
-import toast from 'react-hot-toast';
 
 interface Props {
   project: Project;
+  creatorLastName: string;
+  creatorFirstName: string;
+  creatorImageUrl: string;
 }
 
 const formSchema = z.object({
@@ -32,7 +36,7 @@ const formSchema = z.object({
 });
 
 export function ProjectContent(props: Props) {
-  const { project } = props;
+  const { project, creatorFirstName, creatorLastName, creatorImageUrl } = props;
 
   const router = useRouter();
 
@@ -89,6 +93,26 @@ export function ProjectContent(props: Props) {
             </div>
 
             <div className="flex flex-[0.5] flex-col gap-4">
+              <FormField
+                name="name"
+                render={() => (
+                  <FormItem className="flex flex-col gap-1">
+                    <FormLabel>Создатель проекта</FormLabel>
+
+                    <div className="flex items-center gap-2">
+                      <Avatar className="h-6 w-6">
+                        <AvatarImage src={creatorImageUrl} />
+                        <AvatarFallback>
+                          {creatorFirstName[0]}
+                          {creatorLastName[0]}
+                        </AvatarFallback>
+                      </Avatar>
+                      {creatorFirstName} {creatorLastName}
+                    </div>
+                  </FormItem>
+                )}
+              />
+
               <FormField
                 name="startDate"
                 control={form.control}

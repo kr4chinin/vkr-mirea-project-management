@@ -10,28 +10,54 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum TaskStatus {
+  PLAN
+  READY_FOR_WORK
+  IN_PROGRESS
+  CHECKING
+  REQUIRES_CORRECTION
+  DONE
+}
+
 model Project {
-  id          Int       @id @default(autoincrement())
-  name        String
-  description String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  isCompleted Boolean   @default(false)
-  startDate   DateTime?
-  endDate     DateTime?
+  id             Int       @id @default(autoincrement())
+  name           String
+  description    String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  isCompleted    Boolean   @default(false)
+  createdBy      String
+  startDate      DateTime?
+  endDate        DateTime?
+  particpantsIds Json?
+  isImportant    Boolean   @default(false)
 
   tasks Task[] @relation("project_tasks")
 }
 
 model Task {
-  id          Int       @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   name        String
   description String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  isCompleted Boolean   @default(false)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  isCompleted Boolean    @default(false)
+  createdBy   String
   startDate   DateTime?
   endDate     DateTime?
   projectId   Int
-  project     Project   @relation("project_tasks", fields: [projectId], references: [id])
+  plannedTime Int
+  status      TaskStatus @default(PLAN)
+
+  project Project   @relation("project_tasks", fields: [projectId], references: [id])
+  Subtask Subtask[]
+}
+
+model Subtask {
+  id          Int     @id @default(autoincrement())
+  name        String
+  isCompleted Boolean @default(false)
+  taskId      Int
+
+  task Task @relation(fields: [taskId], references: [id])
 }

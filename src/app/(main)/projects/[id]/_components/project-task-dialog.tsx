@@ -120,7 +120,7 @@ export function ProjectTaskDialog(props: Props) {
   };
 
   const handleChangeTaskIsCompleteState = async () => {
-    if (!task) throw new Error(`Task does not exist yet, failed to change isComplete state`);
+    if (!task) throw new Error('Task does not exist yet, failed to change isComplete state');
 
     await handleSubmit(form.getValues());
     await changeTaskIsCompleteState.mutateAsync({ id: task.id, isCompleted: !task.isCompleted });

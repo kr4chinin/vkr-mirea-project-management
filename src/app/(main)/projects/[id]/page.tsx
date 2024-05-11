@@ -17,11 +17,13 @@ export default async function ProjectPage({ params: { id } }: { params: Params }
   const tasksCount = await api.task.getProjectTasksCount({ projectId });
 
   return (
-    <Tabs defaultValue={ProjectTab.OVERVIEW} className="w-full flex-1 flex-col">
+    <Tabs defaultValue={ProjectTab.OVERVIEW} className="w-full flex-1 flex-col truncate">
       <Subheader>
-        <div className="flex items-center justify-between gap-4 p-4">
-          <div className="flex items-center gap-4">
-            <H2 className="truncate">{project.name}</H2>
+        <div className="flex w-full items-center justify-between gap-4 p-4">
+          <div className="flex w-full items-center gap-4 truncate">
+            <H2 className="truncate" title={project.name}>
+              {project.name}
+            </H2>
 
             <TabsList>
               <TabsTrigger value={ProjectTab.OVERVIEW}>Обзор</TabsTrigger>

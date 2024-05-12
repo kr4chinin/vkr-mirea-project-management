@@ -12,7 +12,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { SidebarGroup } from './sidebar-group';
 import { SidebarItem } from './sidebar-item';
-import { AddProjectDialog } from './add-project-dialog';
+import { CreateProjectDialog } from './create-project-dialog';
 import { type Project } from '@prisma/client';
 import { useParams, usePathname } from 'next/navigation';
 import { AppRoutes, DynamicRoutePath, RoutePath } from '~/config/routeConfig';
@@ -35,7 +35,7 @@ export function Sidebar(props: Props) {
   return (
     <nav className="flex h-full w-sidebar shrink-0 flex-col gap-2 border-r border-slate-300 p-4">
       <div className="flex h-full flex-col gap-2">
-        <AddProjectDialog />
+        <CreateProjectDialog />
 
         <SidebarGroup
           canAddProject

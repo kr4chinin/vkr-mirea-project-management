@@ -20,7 +20,7 @@ import { Label } from '~/components/ui/label';
 import { AppRoutes, RoutePath } from '~/config/routeConfig';
 import { api } from '~/trpc/react';
 
-export function AddProjectDialog() {
+export function CreateProjectDialog() {
   const router = useRouter();
   const [name, setName] = useState('');
 

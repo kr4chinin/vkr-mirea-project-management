@@ -1,13 +1,33 @@
+import { TaskStatus } from '@prisma/client';
 import { formatDate } from 'date-fns';
-import { cn } from '~/lib/utils';
+import { Badge, type BadgeVariant } from '~/components/ui/badge';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '~/components/ui/table';
+import { H2 } from '~/components/ui/typography/h2';
+import { getReadableTaskStatusLabel } from '~/lib/utils';
 import { api } from '~/trpc/server';
 import { CreateProjectTaskDialog } from './create-project-task-dialog';
+import { DeleteTaskButtonWithAlert } from './delete-task-button-with-alert';
 import { ProjectTaskDialog } from './project-task-dialog';
-import { H2 } from '~/components/ui/typography/h2';
 
 interface Props {
   projectId: number;
 }
+
+const badgeVariantMap: Record<TaskStatus, BadgeVariant['variant']> = {
+  [TaskStatus.CHECKING]: 'default',
+  [TaskStatus.DONE]: 'outline',
+  [TaskStatus.IN_PROGRESS]: 'default',
+  [TaskStatus.PLAN]: 'default',
+  [TaskStatus.READY_FOR_WORK]: 'default',
+  [TaskStatus.REQUIRES_CORRECTION]: 'destructive',
+};
 
 export async function ProjectTasks(props: Props) {
   const { projectId } = props;
@@ -20,32 +40,46 @@ export async function ProjectTasks(props: Props) {
 
       <CreateProjectTaskDialog projectId={projectId} />
 
-      <div className="flex flex-col gap-4">
-        {tasks.map(t => (
-          <ProjectTaskDialog
-            task={t}
-            key={t.id}
-            projectId={projectId}
-            button={
-              <div
-                className={cn(
-                  'rounded-md border border-slate-300 p-2 text-gray-600 transition-all duration-200 hover:cursor-pointer hover:bg-slate-100 active:bg-slate-200',
-                  { 'text-slate-400 line-through': t.isCompleted }
-                )}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <p className="text-base font-bold">{t.name}</p>
-                  </div>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Название задачи</TableHead>
+            <TableHead>Дата начала</TableHead>
+            <TableHead>Дата окончания</TableHead>
+            <TableHead>Статус</TableHead>
+          </TableRow>
+        </TableHeader>
 
-                  {t.startDate && <div>{formatDate(t.startDate, 'dd.MM.yyyy')}</div>}
-                  {t.endDate && <div>{formatDate(t.endDate, 'dd.MM.yyyy')}</div>}
-                </div>
-              </div>
-            }
-          />
-        ))}
-      </div>
+        <TableBody>
+          {tasks.map(t => (
+            <ProjectTaskDialog
+              task={t}
+              key={t.id}
+              projectId={projectId}
+              button={
+                <TableRow className="group">
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      {t.name}
+
+                      <DeleteTaskButtonWithAlert id={t.id} />
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    {t.startDate ? formatDate(t.startDate, 'dd.MM.yyyy') : null}
+                  </TableCell>
+                  <TableCell>{t.endDate ? formatDate(t.endDate, 'dd.MM.yyyy') : null}</TableCell>
+                  <TableCell>
+                    <Badge variant={badgeVariantMap[t.status]}>
+                      {getReadableTaskStatusLabel(t.status)}
+                    </Badge>
+                  </TableCell>
+                </TableRow>
+              }
+            />
+          ))}
+        </TableBody>
+      </Table>
     </div>
   );
 }

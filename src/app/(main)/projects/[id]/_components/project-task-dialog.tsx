@@ -37,7 +37,7 @@ import {
 } from '~/components/ui/select';
 import { Textarea } from '~/components/ui/textarea';
 import { AppRoutes, RoutePath } from '~/config/routeConfig';
-import { cn } from '~/lib/utils';
+import { cn, getReadableTaskStatusLabel } from '~/lib/utils';
 import { api } from '~/trpc/react';
 
 const formSchema = z.object({
@@ -137,23 +137,6 @@ export function ProjectTaskDialog(props: Props) {
     setOpened(false);
   };
 
-  const getStatusLabel = (status: TaskStatus) => {
-    switch (status) {
-      case TaskStatus.CHECKING:
-        return 'На проверке';
-      case TaskStatus.IN_PROGRESS:
-        return 'В процессе';
-      case TaskStatus.DONE:
-        return 'Завершена';
-      case TaskStatus.READY_FOR_WORK:
-        return 'Готова к выполнению';
-      case TaskStatus.PLAN:
-        return 'Запланирована';
-      case TaskStatus.REQUIRES_CORRECTION:
-        return 'Требуются исправления';
-    }
-  };
-
   return (
     <Dialog open={opened} onOpenChange={setOpened}>
       <DialogTrigger asChild>{button}</DialogTrigger>
@@ -239,7 +222,7 @@ export function ProjectTaskDialog(props: Props) {
                       <SelectContent>
                         {Object.values(TaskStatus).map(status => (
                           <SelectItem key={status} value={status}>
-                            {getStatusLabel(status)}
+                            {getReadableTaskStatusLabel(status)}
                           </SelectItem>
                         ))}
                       </SelectContent>

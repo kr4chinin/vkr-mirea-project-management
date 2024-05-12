@@ -80,4 +80,8 @@ export const taskRouter = createTRPCRouter({
         },
       });
     }),
+
+  delete: publicProcedure.input(z.object({ id: z.number() })).mutation(({ ctx, input }) => {
+    return ctx.db.task.delete({ where: { id: input.id } });
+  }),
 });

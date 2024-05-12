@@ -35,6 +35,9 @@ const config = {
       },
     },
     extend: {
+      height: {
+        header: 'var(--header-height)',
+      },
       width: {
         sidebar: '348px',
       },

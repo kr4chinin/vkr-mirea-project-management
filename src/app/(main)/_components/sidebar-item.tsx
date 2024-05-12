@@ -16,7 +16,7 @@ export function SidebarItem(props: Props) {
   return (
     <div
       className={cn(
-        'flex w-full items-center justify-between gap-2 truncate rounded-md border border-slate-200 px-2 py-1 text-gray-500 transition-all duration-200 hover:cursor-pointer hover:bg-slate-200 active:bg-slate-300',
+        'flex w-full shrink-0 items-center justify-between gap-2 truncate rounded-md border border-slate-200 px-2 py-1 text-gray-500 transition-all duration-200 hover:cursor-pointer hover:bg-slate-200 active:bg-slate-300',
         { ['bg-slate-200']: active }
       )}
     >

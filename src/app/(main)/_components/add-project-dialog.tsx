@@ -3,8 +3,8 @@
 import { useUser } from '@clerk/nextjs';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { redirect, useRouter } from 'next/navigation';
-import { type FormEvent, useState, type ChangeEvent } from 'react';
-import toast from 'react-hot-toast';
+import { useState, type ChangeEvent, type FormEvent } from 'react';
+import { toast } from 'sonner';
 import { Button } from '~/components/ui/button';
 import {
   Dialog,

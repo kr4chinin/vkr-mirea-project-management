@@ -5,9 +5,9 @@ import { type ReactNode } from 'react';
 import { TRPCReactProvider } from '~/trpc/react';
 import { Header } from './_components/header';
 import HolyLoader from 'holy-loader';
-import { Toaster } from 'react-hot-toast';
 import { ClerkProvider } from '@clerk/nextjs';
 import { ruRU } from '@clerk/localizations';
+import { Toaster } from '~/components/ui/sonner';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -34,7 +34,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <main className="h-full">{children}</main>
           </TRPCReactProvider>
 
-          <Toaster position="top-right" reverseOrder={false} />
+          <Toaster position="bottom-right" closeButton theme="light" duration={3000} />
         </body>
       </html>
     </ClerkProvider>

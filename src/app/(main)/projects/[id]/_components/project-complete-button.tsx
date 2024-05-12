@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 import { Button } from '~/components/ui/button';
 import { api } from '~/trpc/react';
 

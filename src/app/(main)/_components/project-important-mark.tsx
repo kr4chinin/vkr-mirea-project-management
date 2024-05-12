@@ -3,7 +3,7 @@
 import { StarIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
 import { type MouseEventHandler } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 import { cn } from '~/lib/utils';
 import { api } from '~/trpc/react';
 

@@ -64,7 +64,7 @@ export const projectRouter = createTRPCRouter({
         isImportant: z.boolean().optional(),
         startDate: z.date().optional(),
         endDate: z.date().optional(),
-        participants: z.array(z.string().trim()),
+        participants: z.array(z.string().trim()).optional(),
       })
     )
     .mutation(({ ctx, input }) => {
@@ -76,7 +76,7 @@ export const projectRouter = createTRPCRouter({
           startDate: input.startDate,
           description: input.description,
           isImportant: input.isImportant,
-          particpantsIds: JSON.stringify(input.participants),
+          particpantsIds: input.participants ? JSON.stringify(input.participants) : undefined,
         },
       });
     }),

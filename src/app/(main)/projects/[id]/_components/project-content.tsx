@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { type Project } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import * as z from 'zod';
 import { Button } from '~/components/ui/button';
 import { DatePicker } from '~/components/ui/date-picker';
@@ -22,6 +21,7 @@ import { UsersMultiSelect, type UserOptionType } from '~/components/ui/users-mul
 import { type ClientUser } from '~/lib/models/ClientUser';
 import { api } from '~/trpc/react';
 import { ProjectDatesInfoBlock } from './project-dates-info-block';
+import { toast } from 'sonner';
 
 interface Props {
   project: Project;

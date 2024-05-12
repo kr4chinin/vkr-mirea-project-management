@@ -14,9 +14,19 @@ export const projectRouter = createTRPCRouter({
       });
     }),
 
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.db.project.findMany({
+  getAll: publicProcedure.query(async ({ ctx }) => {
+    const projects = await ctx.db.project.findMany({
       orderBy: [{ isImportant: 'desc' }, { createdAt: 'desc' }],
+    });
+
+    return projects.map(project => {
+      return {
+        ...project,
+        particpantsIds:
+          project.particpantsIds && typeof project.particpantsIds === 'string'
+            ? (JSON.parse(project.particpantsIds) as string[])
+            : [],
+      };
     });
   }),
 
@@ -31,10 +41,18 @@ export const projectRouter = createTRPCRouter({
       return clerkClient.users.getUser(createdBy);
     }),
 
-  getOne: publicProcedure.input(z.object({ id: z.number() })).query(({ ctx, input }) => {
-    return ctx.db.project.findUniqueOrThrow({
+  getOne: publicProcedure.input(z.object({ id: z.number() })).query(async ({ ctx, input }) => {
+    const project = await ctx.db.project.findUniqueOrThrow({
       where: { id: input.id },
     });
+
+    return {
+      ...project,
+      particpantsIds:
+        project.particpantsIds && typeof project.particpantsIds === 'string'
+          ? (JSON.parse(project.particpantsIds) as string[])
+          : [],
+    };
   }),
 
   updateProject: publicProcedure
@@ -46,6 +64,7 @@ export const projectRouter = createTRPCRouter({
         isImportant: z.boolean().optional(),
         startDate: z.date().optional(),
         endDate: z.date().optional(),
+        participants: z.array(z.string().trim()),
       })
     )
     .mutation(({ ctx, input }) => {
@@ -57,6 +76,7 @@ export const projectRouter = createTRPCRouter({
           startDate: input.startDate,
           description: input.description,
           isImportant: input.isImportant,
+          particpantsIds: JSON.stringify(input.participants),
         },
       });
     }),

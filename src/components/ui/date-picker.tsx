@@ -8,8 +8,8 @@ import { Calendar } from './calendar';
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
 
 interface Props {
-  selected: Date | undefined;
-  onSelect: (date: Date | undefined) => void;
+  selected?: Date;
+  onSelect: (date?: Date) => void;
 }
 
 export function DatePicker(props: Props) {

@@ -18,25 +18,44 @@ import {
 } from '~/components/ui/form';
 import { Textarea } from '~/components/ui/textarea';
 import { UserBlock } from '~/components/ui/user-block';
+import { UsersMultiSelect, type UserOptionType } from '~/components/ui/users-multiselect';
+import { type ClientUser } from '~/lib/models/ClientUser';
 import { api } from '~/trpc/react';
 import { ProjectDatesInfoBlock } from './project-dates-info-block';
 
 interface Props {
   project: Project;
+  users: ClientUser[];
   creatorLastName: string;
   creatorFirstName: string;
   creatorImageUrl: string;
 }
 
 const formSchema = z.object({
-  name: z.string().min(1),
+  name: z.string().trim().min(1),
   description: z.string(),
   startDate: z.date().optional(),
   endDate: z.date().optional(),
+  participants: z
+    .array(
+      z.object({
+        id: z.string(),
+        lastName: z.string().trim(),
+        imageUrl: z.string(),
+        firstName: z.string().trim(),
+      })
+    )
+    .refine(
+      value =>
+        value.every((item: UserOptionType) => {
+          return item.id && item.lastName && item.imageUrl && item.firstName;
+        }),
+      { message: 'Неправильный массив участников' }
+    ),
 });
 
 export function ProjectContent(props: Props) {
-  const { project, creatorFirstName, creatorLastName, creatorImageUrl } = props;
+  const { users, project, creatorFirstName, creatorLastName, creatorImageUrl } = props;
 
   const router = useRouter();
 
@@ -48,6 +67,25 @@ export function ProjectContent(props: Props) {
     },
   });
 
+  const getDefaultParticipants = () => {
+    const result: UserOptionType[] = [];
+
+    ((project.particpantsIds as string[]) ?? []).forEach(participantId => {
+      const user = users.find(u => u.id === participantId);
+
+      if (user) {
+        result.push({
+          id: user.id,
+          lastName: user.lastName,
+          imageUrl: user.imageUrl,
+          firstName: user.firstName,
+        });
+      }
+    });
+
+    return result;
+  };
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -55,18 +93,29 @@ export function ProjectContent(props: Props) {
       description: project.description ?? '',
       startDate: project.startDate ?? undefined,
       endDate: project.endDate ?? undefined,
+      participants: getDefaultParticipants(),
     },
   });
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+    console.log(values.participants);
+
     await updateProject.mutateAsync({
       id: project.id,
       name: values.name,
-      description: values.description,
-      startDate: values.startDate,
       endDate: values.endDate,
+      startDate: values.startDate,
+      description: values.description,
+      participants: values.participants.map(p => p.id),
     });
   };
+
+  const participantsOptions = users.map<UserOptionType>(u => ({
+    id: u.id,
+    lastName: u.lastName,
+    imageUrl: u.imageUrl,
+    firstName: u.firstName,
+  }));
 
   return (
     <Form {...form}>
@@ -96,7 +145,7 @@ export function ProjectContent(props: Props) {
               <FormField
                 name="name"
                 render={() => (
-                  <FormItem className="flex flex-col gap-1">
+                  <FormItem className="flex flex-col gap-1 text-sm font-medium">
                     <FormLabel>Создатель проекта</FormLabel>
 
                     <UserBlock
@@ -140,6 +189,18 @@ export function ProjectContent(props: Props) {
             </div>
           </div>
         </div>
+
+        <FormField
+          name="participants"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem className="flex flex-col gap-1">
+              <FormLabel>Выберите участников проекта</FormLabel>
+              <UsersMultiSelect selected={field.value} {...field} options={participantsOptions} />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <Button className="w-fit" type="submit" disabled={updateProject.isPending}>
           Сохранить изменения

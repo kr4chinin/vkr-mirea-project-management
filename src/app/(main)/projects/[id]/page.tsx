@@ -1,20 +1,22 @@
 import { type Params } from 'next/dist/shared/lib/router/utils/route-matcher';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
+import { H2 } from '~/components/ui/typography/h2';
+import { ProjectTab } from '~/lib/models/ProjectTab';
 import { api } from '~/trpc/server';
 import { Subheader } from '../../_components/subheader';
 import { ProjectCompleteButton } from './_components/project-complete-button';
 import { ProjectContent } from './_components/project-content';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
-import { ProjectTasks } from './_components/project-tasks';
-import { ProjectTab } from '~/lib/models/ProjectTab';
 import { ProjectMonitoring } from './_components/project-monitoring';
-import { H2 } from '~/components/ui/typography/h2';
+import { ProjectTasks } from './_components/project-tasks';
 
 export default async function ProjectPage({ params: { id } }: { params: Params }) {
   const projectId = Number(id);
 
+  const users = await api.user.getAll();
+
   const project = await api.project.getOne({ id: projectId });
-  const projectCreator = await api.project.getProjectCreator({ id: projectId });
   const tasksCount = await api.task.getProjectTasksCount({ projectId });
+  const projectCreator = users.find(u => u.id === project.createdBy);
 
   return (
     <Tabs defaultValue={ProjectTab.OVERVIEW} className="w-full flex-1 flex-col truncate">
@@ -37,12 +39,15 @@ export default async function ProjectPage({ params: { id } }: { params: Params }
       </Subheader>
 
       <TabsContent value={ProjectTab.OVERVIEW}>
-        <ProjectContent
-          project={project}
-          creatorImageUrl={projectCreator.imageUrl}
-          creatorLastName={projectCreator.lastName ?? 'Неизвестно'}
-          creatorFirstName={projectCreator.firstName ?? 'Неизвестно'}
-        />
+        {projectCreator && (
+          <ProjectContent
+            users={users}
+            project={project}
+            creatorImageUrl={projectCreator.imageUrl}
+            creatorLastName={projectCreator.lastName}
+            creatorFirstName={projectCreator.firstName}
+          />
+        )}
       </TabsContent>
 
       <TabsContent value={ProjectTab.TASKS}>

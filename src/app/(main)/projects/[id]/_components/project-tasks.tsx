@@ -52,31 +52,27 @@ export async function ProjectTasks(props: Props) {
 
         <TableBody>
           {tasks.map(t => (
-            <ProjectTaskDialog
-              task={t}
-              key={t.id}
-              projectId={projectId}
-              button={
-                <TableRow className="group">
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      {t.name}
+            <TableRow className="group" key={t.id}>
+              <TableCell>
+                <div className="flex items-center gap-2">
+                  <ProjectTaskDialog
+                    task={t}
+                    key={t.id}
+                    projectId={projectId}
+                    button={<div className="hover:cursor-pointer hover:underline">{t.name}</div>}
+                  />
 
-                      <DeleteTaskButtonWithAlert id={t.id} />
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    {t.startDate ? formatDate(t.startDate, 'dd.MM.yyyy') : null}
-                  </TableCell>
-                  <TableCell>{t.endDate ? formatDate(t.endDate, 'dd.MM.yyyy') : null}</TableCell>
-                  <TableCell>
-                    <Badge variant={badgeVariantMap[t.status]}>
-                      {getReadableTaskStatusLabel(t.status)}
-                    </Badge>
-                  </TableCell>
-                </TableRow>
-              }
-            />
+                  <DeleteTaskButtonWithAlert id={t.id} />
+                </div>
+              </TableCell>
+              <TableCell>{t.startDate ? formatDate(t.startDate, 'dd.MM.yyyy') : null}</TableCell>
+              <TableCell>{t.endDate ? formatDate(t.endDate, 'dd.MM.yyyy') : null}</TableCell>
+              <TableCell>
+                <Badge variant={badgeVariantMap[t.status]}>
+                  {getReadableTaskStatusLabel(t.status)}
+                </Badge>
+              </TableCell>
+            </TableRow>
           ))}
         </TableBody>
       </Table>

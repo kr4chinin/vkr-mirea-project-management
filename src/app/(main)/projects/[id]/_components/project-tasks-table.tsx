@@ -41,7 +41,7 @@ export function ProjectTasksTable(props: Props) {
 
         <TableHeader>
           <TableRow>
-            <TableHead className="sticky top-0">Название задачи</TableHead>
+            <TableHead>Название задачи</TableHead>
             <TableHead>Дата начала</TableHead>
             <TableHead>Дата окончания</TableHead>
             <TableHead>Статус</TableHead>

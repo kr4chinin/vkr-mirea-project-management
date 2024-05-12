@@ -25,6 +25,7 @@ export const taskRouter = createTRPCRouter({
         startDate: z.date().optional(),
         endDate: z.date().optional(),
         projectId: z.number(),
+        status: z.nativeEnum(TaskStatus).optional(),
       })
     )
     .mutation(({ ctx, input }) => {
@@ -36,6 +37,7 @@ export const taskRouter = createTRPCRouter({
           startDate: input.startDate,
           endDate: input.endDate,
           projectId: input.projectId,
+          status: input.status,
         },
       });
     }),

@@ -3,7 +3,7 @@
 import { useUser } from '@clerk/nextjs';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { type Task } from '@prisma/client';
+import { TaskStatus, type Task } from '@prisma/client';
 import { redirect, useRouter } from 'next/navigation';
 import { useState, type ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
@@ -28,6 +28,13 @@ import {
   FormMessage,
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '~/components/ui/select';
 import { Textarea } from '~/components/ui/textarea';
 import { AppRoutes, RoutePath } from '~/config/routeConfig';
 import { cn } from '~/lib/utils';
@@ -38,6 +45,7 @@ const formSchema = z.object({
   description: z.string(),
   startDate: z.date().optional(),
   endDate: z.date().optional(),
+  status: z.nativeEnum(TaskStatus).optional(),
 });
 
 interface Props {
@@ -91,6 +99,7 @@ export function ProjectTaskDialog(props: Props) {
       description: task?.description ?? '',
       startDate: task?.startDate ?? undefined,
       endDate: task?.endDate ?? undefined,
+      status: task?.status,
     },
   });
 
@@ -102,6 +111,7 @@ export function ProjectTaskDialog(props: Props) {
         description: values.description,
         startDate: values.startDate,
         endDate: values.endDate,
+        status: values.status,
       });
     } else {
       if (!user) redirect(RoutePath[AppRoutes.SIGN_IN]);
@@ -113,10 +123,9 @@ export function ProjectTaskDialog(props: Props) {
         description: values.description,
         startDate: values.startDate,
         endDate: values.endDate,
+        status: values.status,
       });
     }
-
-    form.reset();
   };
 
   const handleChangeTaskIsCompleteState = async () => {
@@ -126,6 +135,23 @@ export function ProjectTaskDialog(props: Props) {
     await changeTaskIsCompleteState.mutateAsync({ id: task.id, isCompleted: !task.isCompleted });
 
     setOpened(false);
+  };
+
+  const getStatusLabel = (status: TaskStatus) => {
+    switch (status) {
+      case TaskStatus.CHECKING:
+        return 'На проверке';
+      case TaskStatus.IN_PROGRESS:
+        return 'В процессе';
+      case TaskStatus.DONE:
+        return 'Завершена';
+      case TaskStatus.READY_FOR_WORK:
+        return 'Готова к выполнению';
+      case TaskStatus.PLAN:
+        return 'Запланирована';
+      case TaskStatus.REQUIRES_CORRECTION:
+        return 'Требуются исправления';
+    }
   };
 
   return (
@@ -199,13 +225,38 @@ export function ProjectTaskDialog(props: Props) {
             </div>
 
             <FormField
+              name="status"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="flex flex-col gap-1">
+                  <FormLabel>Статус задачи</FormLabel>
+
+                  <FormControl>
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <SelectTrigger className="w-[240px]">
+                        <SelectValue placeholder="Выберите статус" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Object.values(TaskStatus).map(status => (
+                          <SelectItem key={status} value={status}>
+                            {getStatusLabel(status)}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            <FormField
               name="description"
               control={form.control}
               render={({ field }) => (
                 <FormItem className="flex flex-col gap-1">
                   <FormLabel>Описание задачи</FormLabel>
                   <FormControl>
-                    <Textarea rows={10} placeholder="Введите описание задачи" {...field} />
+                    <Textarea rows={6} placeholder="Введите описание задачи" {...field} />
                   </FormControl>
 
                   <FormMessage />

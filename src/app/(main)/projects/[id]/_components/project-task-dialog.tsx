@@ -125,6 +125,8 @@ export function ProjectTaskDialog(props: Props) {
         endDate: values.endDate,
         status: values.status,
       });
+
+      form.reset();
     }
   };
 

@@ -25,20 +25,25 @@ export const analyticsRouter = createTRPCRouter({
 
   getProjectsAnalytics: publicProcedure.query(async ({ ctx }) => {
     const getProjectsAverageDuration = async () => {
-      const projects = await ctx.db.project.findMany();
+      const projects = await ctx.db.project.findMany({
+        where: {
+          startDate: { not: null },
+          endDate: { not: null },
+        },
+        select: {
+          startDate: true,
+          endDate: true,
+        },
+      });
 
-      const durations = projects.map<number>(p => {
-        const startDate = p.startDate;
-        const endDate = p.endDate;
-
-        if (startDate && endDate) {
-          const durationInDays = differenceInDays(endDate, startDate);
-
-          return durationInDays;
+      const durations = projects.map(({ startDate, endDate }) => {
+        if (!startDate || !endDate) {
+          return 0;
         }
 
-        // If project has no start or end date, consider duration as 0
-        return 0;
+        const durationInDays = differenceInDays(endDate, startDate);
+
+        return durationInDays;
       });
 
       const averageDuration =

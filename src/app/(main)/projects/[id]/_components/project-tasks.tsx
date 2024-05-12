@@ -4,6 +4,7 @@ import { Badge, type BadgeVariant } from '~/components/ui/badge';
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -41,6 +42,8 @@ export async function ProjectTasks(props: Props) {
       <CreateProjectTaskDialog projectId={projectId} />
 
       <Table>
+        {!tasks.length && <TableCaption>В этом проекте пока нет задач.</TableCaption>}
+
         <TableHeader>
           <TableRow>
             <TableHead>Название задачи</TableHead>

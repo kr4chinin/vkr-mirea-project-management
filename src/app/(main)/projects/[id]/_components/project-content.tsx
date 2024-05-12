@@ -120,7 +120,7 @@ export function ProjectContent(props: Props) {
   return (
     <Form {...form}>
       <form className="flex flex-col gap-4 p-4" onSubmit={form.handleSubmit(handleSubmit)}>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-6">
           <ProjectDatesInfoBlock createdAt={project.createdAt} />
 
           <div className="flex gap-4">

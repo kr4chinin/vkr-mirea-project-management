@@ -37,6 +37,7 @@ const config = {
     extend: {
       height: {
         header: 'var(--header-height)',
+        subheader: 'var(--subheader-height)',
       },
       width: {
         sidebar: '348px',

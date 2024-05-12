@@ -19,7 +19,10 @@ export default async function ProjectPage({ params: { id } }: { params: Params }
   const projectCreator = users.find(u => u.id === project.createdBy);
 
   return (
-    <Tabs defaultValue={ProjectTab.OVERVIEW} className="w-full flex-1 flex-col truncate">
+    <Tabs
+      defaultValue={ProjectTab.OVERVIEW}
+      className="h-[calc(100dvh-var(--header-height))] w-full flex-1 flex-col overflow-hidden truncate"
+    >
       <Subheader>
         <div className="flex w-full items-center justify-between gap-4 p-4">
           <div className="flex w-full items-center gap-4 truncate">
@@ -38,25 +41,27 @@ export default async function ProjectPage({ params: { id } }: { params: Params }
         </div>
       </Subheader>
 
-      <TabsContent value={ProjectTab.OVERVIEW}>
-        {projectCreator && (
-          <ProjectContent
-            users={users}
-            project={project}
-            creatorImageUrl={projectCreator.imageUrl}
-            creatorLastName={projectCreator.lastName}
-            creatorFirstName={projectCreator.firstName}
-          />
-        )}
-      </TabsContent>
+      <div className="h-[calc(100%-var(--subheader-height))]">
+        <TabsContent value={ProjectTab.OVERVIEW} className="h-full">
+          {projectCreator && (
+            <ProjectContent
+              users={users}
+              project={project}
+              creatorImageUrl={projectCreator.imageUrl}
+              creatorLastName={projectCreator.lastName}
+              creatorFirstName={projectCreator.firstName}
+            />
+          )}
+        </TabsContent>
 
-      <TabsContent value={ProjectTab.TASKS}>
-        <ProjectTasks projectId={projectId} />
-      </TabsContent>
+        <TabsContent value={ProjectTab.TASKS} className="h-full">
+          <ProjectTasks projectId={projectId} />
+        </TabsContent>
 
-      <TabsContent value={ProjectTab.MONITORING}>
-        <ProjectMonitoring projectId={projectId} />
-      </TabsContent>
+        <TabsContent value={ProjectTab.MONITORING} className="h-full">
+          <ProjectMonitoring projectId={projectId} />
+        </TabsContent>
+      </div>
     </Tabs>
   );
 }

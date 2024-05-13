@@ -46,13 +46,13 @@ export function Sidebar(props: Props) {
               canAddProject
               defaultOpened
               groupName="Активные проекты"
-              groupIcon={<PuzzlePieceIcon />}
+              groupIcon={<PuzzlePieceIcon width={22} height={22} />}
             >
               {activeProjects.map(p => (
                 <SidebarItem
                   key={p.id}
                   itemText={p.name}
-                  itemIcon={<Squares2X2Icon />}
+                  itemIcon={<Squares2X2Icon width={18} height={18} />}
                   active={p.id === currentProjectId}
                   href={DynamicRoutePath[AppRoutes.PROJECTS](p.id)}
                   controls={<ProjectImportantMark projectId={p.id} isImportant={p.isImportant} />}
@@ -62,25 +62,29 @@ export function Sidebar(props: Props) {
 
             <SidebarGroup
               groupName="Завершенные проекты"
-              groupIcon={<CheckCircleIcon />}
+              groupIcon={<CheckCircleIcon width={22} height={22} />}
               defaultOpened
             >
               {finishedProjects.map(p => (
                 <SidebarItem
                   key={p.id}
                   itemText={p.name}
-                  itemIcon={<CheckIcon />}
                   active={p.id === currentProjectId}
+                  itemIcon={<CheckIcon width={18} height={18} />}
                   href={DynamicRoutePath[AppRoutes.PROJECTS](p.id)}
                 />
               ))}
             </SidebarGroup>
 
-            <SidebarGroup groupName="Аналитика" groupIcon={<ChartPieIcon />} defaultOpened>
+            <SidebarGroup
+              groupName="Аналитика"
+              groupIcon={<ChartPieIcon width={22} height={22} />}
+              defaultOpened
+            >
               <SidebarItem
                 itemText="Аналитика"
-                itemIcon={<ChartBarIcon />}
                 href={RoutePath[AppRoutes.ANALYTICS]}
+                itemIcon={<ChartBarIcon width={18} height={18} />}
                 active={pathname === RoutePath[AppRoutes.ANALYTICS]}
               />
             </SidebarGroup>
@@ -91,13 +95,13 @@ export function Sidebar(props: Props) {
           <SidebarItem
             itemText="Настройки"
             href={RoutePath[AppRoutes.SETTINGS]}
-            itemIcon={<AdjustmentsVerticalIcon />}
+            itemIcon={<AdjustmentsVerticalIcon width={18} height={18} />}
             active={pathname === RoutePath[AppRoutes.SETTINGS]}
           />
           <SidebarItem
             itemText="Справка"
             href={RoutePath[AppRoutes.HELP]}
-            itemIcon={<QuestionMarkCircleIcon />}
+            itemIcon={<QuestionMarkCircleIcon width={18} height={18} />}
             active={pathname === RoutePath[AppRoutes.HELP]}
           />
         </div>

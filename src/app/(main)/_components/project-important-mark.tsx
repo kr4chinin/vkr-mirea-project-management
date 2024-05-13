@@ -40,6 +40,8 @@ export function ProjectImportantMark(props: Props) {
       onClick={handleUpdateProject}
     >
       <StarIcon
+        width={16}
+        height={16}
         fill={isImportant ? 'yellow' : 'none'}
         className={cn('transition-all duration-200', {
           'text-yellow-400': isImportant,

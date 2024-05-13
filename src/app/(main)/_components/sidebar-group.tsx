@@ -19,7 +19,11 @@ export function SidebarGroup(props: Props) {
   const [isOpened, setIsOpened] = useState(defaultOpened);
 
   return (
-    <Collapsible open={isOpened} className="flex shrink-0 flex-col gap-2" onOpenChange={setIsOpened}>
+    <Collapsible
+      open={isOpened}
+      className="flex shrink-0 flex-col gap-2"
+      onOpenChange={setIsOpened}
+    >
       <CollapsibleTrigger>
         <div className="flex items-center justify-between gap-2 pl-2 text-slate-500">
           <div className="flex items-center gap-2">
@@ -39,7 +43,7 @@ export function SidebarGroup(props: Props) {
                 }
               )}
             >
-              <ChevronDownIcon strokeWidth={2} />
+              <ChevronDownIcon width={16} height={16} strokeWidth={2} />
             </div>
           </div>
         </div>

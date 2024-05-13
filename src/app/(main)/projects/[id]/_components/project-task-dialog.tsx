@@ -262,7 +262,7 @@ export function ProjectTaskDialog(props: Props) {
                 >
                   {!task.isCompleted && (
                     <div className="flex h-[20px] w-[20px] shrink-0 items-center justify-center">
-                      <CheckCircleIcon stroke="white" />
+                      <CheckCircleIcon width={20} height={20} stroke="white" />
                     </div>
                   )}
 

@@ -56,7 +56,7 @@ export function CreateProjectDialog() {
       <DialogTrigger asChild>
         <Button className="flex w-full items-center gap-2">
           <div className="flex h-[18px] w-[18px] shrink-0 content-center items-center">
-            <PlusCircleIcon />
+            <PlusCircleIcon width={18} height={18} />
           </div>
           Создать проект
         </Button>

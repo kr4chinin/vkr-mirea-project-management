@@ -47,7 +47,7 @@ export function DeleteTaskButtonWithAlert(props: Props) {
           className="flex h-[16px] w-[16px] shrink-0 items-start justify-center text-transparent transition-all duration-200 hover:text-red-500 active:text-red-600 group-hover:text-slate-400"
           onClick={e => e.stopPropagation()}
         >
-          <TrashIcon />
+          <TrashIcon width={16} height={16} />
         </button>
       </AlertDialogTrigger>
 

@@ -11,7 +11,7 @@ export default async function HelpPage() {
       <Button asChild>
         <Link href="https://github.com/kr4chinin/vkr_mirea" className="flex items-center gap-2">
           <span className="flex h-[16px] w-[16px] shrink-0 items-center justify-center">
-            <GitHubLogoIcon />
+            <GitHubLogoIcon width={16} height={16} />
           </span>
           GitHub
         </Link>

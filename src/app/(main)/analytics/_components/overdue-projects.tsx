@@ -23,7 +23,7 @@ export async function OverdueProjects() {
                 className="flex w-fit items-center gap-2 rounded-md border border-slate-400 px-2 py-1 transition-all duration-200 hover:bg-slate-100"
               >
                 <div className="flex h-[18px] w-[18px] shrink-0 items-center justify-center">
-                  <Squares2X2Icon />
+                  <Squares2X2Icon width={18} height={18} />
                 </div>
 
                 {p.name}

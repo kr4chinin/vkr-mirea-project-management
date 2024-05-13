@@ -9,7 +9,7 @@ export function Header() {
   const { isSignedIn } = useUser();
 
   return (
-    <header className="h-header flex w-full items-center justify-between gap-4 border-b border-slate-300 bg-white p-4">
+    <header className="flex h-header w-full items-center justify-between gap-4 border-b border-slate-300 bg-white p-4">
       <Link
         href={isSignedIn ? RoutePath[AppRoutes.PROJECTS] : RoutePath[AppRoutes.SIGN_IN]}
         className="flex items-center gap-3"
@@ -25,7 +25,7 @@ export function Header() {
 
           <div className="flex h-[28px] w-[28px] items-center justify-center rounded-full border border-slate-300">
             <div className="flex h-[18px] w-[18px] shrink-0 items-center justify-center text-slate-500">
-              <BellIcon />
+              <BellIcon width={18} height={18} />
             </div>
           </div>
         </div>

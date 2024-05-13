@@ -17,7 +17,7 @@ export function CreateProjectTaskDialog(props: Props) {
       button={
         <Button className="flex w-fit items-center gap-2">
           <div className="flex h-[18px] w-[18px] shrink-0 content-center items-center">
-            <PlusCircleIcon />
+            <PlusCircleIcon width={18} height={18} />
           </div>
           Добавить проектную задачу
         </Button>

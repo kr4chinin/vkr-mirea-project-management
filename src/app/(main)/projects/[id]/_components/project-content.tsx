@@ -3,9 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type Project } from '@prisma/client';
 import { useRouter } from 'next/navigation';
-import { useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import * as z from 'zod';
 import { Button } from '~/components/ui/button';
 import { DatePicker } from '~/components/ui/date-picker';
@@ -23,6 +21,7 @@ import { UsersMultiSelect, type UserOptionType } from '~/components/ui/users-mul
 import { type ClientUser } from '~/lib/models/ClientUser';
 import { api } from '~/trpc/react';
 import { ProjectDatesInfoBlock } from './project-dates-info-block';
+import { toast } from 'sonner';
 
 interface Props {
   project: Project;
@@ -51,7 +50,7 @@ const formSchema = z.object({
         value.every((item: UserOptionType) => {
           return item.id && item.lastName && item.imageUrl && item.firstName;
         }),
-      { message: 'Неправильный массив участников участников проекта' }
+      { message: 'Неправильный массив участников' }
     ),
 });
 
@@ -68,27 +67,24 @@ export function ProjectContent(props: Props) {
     },
   });
 
-  const getDefaultParticipants = useCallback(
-    (project: Project) => {
-      const result: UserOptionType[] = [];
+  const getDefaultParticipants = () => {
+    const result: UserOptionType[] = [];
 
-      ((project.particpantsIds as string[]) ?? []).forEach(participantId => {
-        const user = users.find(u => u.id === participantId);
+    ((project.particpantsIds as string[]) ?? []).forEach(participantId => {
+      const user = users.find(u => u.id === participantId);
 
-        if (user) {
-          result.push({
-            id: user.id,
-            lastName: user.lastName,
-            imageUrl: user.imageUrl,
-            firstName: user.firstName,
-          });
-        }
-      });
+      if (user) {
+        result.push({
+          id: user.id,
+          lastName: user.lastName,
+          imageUrl: user.imageUrl,
+          firstName: user.firstName,
+        });
+      }
+    });
 
-      return result;
-    },
-    [users]
-  );
+    return result;
+  };
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -97,42 +93,29 @@ export function ProjectContent(props: Props) {
       description: project.description ?? '',
       startDate: project.startDate ?? undefined,
       endDate: project.endDate ?? undefined,
-      participants: getDefaultParticipants(project),
+      participants: getDefaultParticipants(),
     },
   });
 
-  const handleSubmit = useCallback(
-    async (values: z.infer<typeof formSchema>) => {
-      const updatedProject = await updateProject.mutateAsync({
-        id: project.id,
-        name: values.name,
-        endDate: values.endDate,
-        startDate: values.startDate,
-        description: values.description,
-        participants: values.participants.map(p => p.id),
-      });
+  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+    console.log(values.participants);
 
-      form.reset({
-        name: updatedProject.name,
-        description: updatedProject.description ?? '',
-        startDate: updatedProject.startDate ?? undefined,
-        endDate: updatedProject.endDate ?? undefined,
-        participants: getDefaultParticipants(updatedProject),
-      });
-    },
-    [project, form, updateProject, getDefaultParticipants]
-  );
+    await updateProject.mutateAsync({
+      id: project.id,
+      name: values.name,
+      endDate: values.endDate,
+      startDate: values.startDate,
+      description: values.description,
+      participants: values.participants.map(p => p.id),
+    });
+  };
 
-  const participantsOptions = useMemo<UserOptionType[]>(
-    () =>
-      users.map<UserOptionType>(u => ({
-        id: u.id,
-        lastName: u.lastName,
-        imageUrl: u.imageUrl,
-        firstName: u.firstName,
-      })),
-    [users]
-  );
+  const participantsOptions = users.map<UserOptionType>(u => ({
+    id: u.id,
+    lastName: u.lastName,
+    imageUrl: u.imageUrl,
+    firstName: u.firstName,
+  }));
 
   return (
     <Form {...form}>
@@ -219,11 +202,9 @@ export function ProjectContent(props: Props) {
           )}
         />
 
-        {form.formState.isDirty && (
-          <Button className="w-fit" type="submit" disabled={updateProject.isPending}>
-            Сохранить изменения
-          </Button>
-        )}
+        <Button className="w-fit" type="submit" disabled={updateProject.isPending}>
+          Сохранить изменения
+        </Button>
       </form>
     </Form>
   );

@@ -18,7 +18,7 @@ export function ProjectDatesInfoBlock(props: Props) {
 
       <p>
         Проект в работе (дней):{' '}
-        <span className="font-medium">{differenceInDays(new Date(), createdAt)}</span>
+        <span className="font-medium">{differenceInDays(createdAt, new Date()) + 1}</span>
       </p>
     </div>
   );

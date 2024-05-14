@@ -1,7 +1,7 @@
 'use client';
 
 import { Check, ChevronsUpDown, X } from 'lucide-react';
-import { forwardRef, useState, type Dispatch, type SetStateAction } from 'react';
+import { type SetStateAction, forwardRef, useEffect, useState, type Dispatch } from 'react';
 import { cn } from '~/lib/utils';
 import { Badge } from './badge';
 import { Button } from './button';
@@ -28,6 +28,26 @@ const UsersMultiSelect = forwardRef<HTMLButtonElement, UsersMultiSelectProps>(
       onChange(selected.filter(i => i.id !== item.id));
     };
 
+    // on delete key press, remove last selected item
+    useEffect(() => {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Backspace' && selected.length > 0) {
+          onChange(selected.filter((_, index) => index !== selected.length - 1));
+        }
+
+        // close on escape
+        if (e.key === 'Escape') {
+          setOpen(false);
+        }
+      };
+
+      document.addEventListener('keydown', handleKeyDown);
+
+      return () => {
+        document.removeEventListener('keydown', handleKeyDown);
+      };
+    }, [selected, onChange]);
+
     return (
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild className={className}>
@@ -40,13 +60,18 @@ const UsersMultiSelect = forwardRef<HTMLButtonElement, UsersMultiSelectProps>(
             onClick={() => setOpen(!open)}
           >
             <div className="flex flex-wrap items-center gap-1">
-              {selected.map(i => (
+              {selected.map(item => (
                 <Badge
-                  key={i.id}
+                  key={item.id}
                   variant="outline"
                   className="flex items-center gap-1 group-hover:bg-background"
+                  onClick={() => handleUnselect(item)}
                 >
-                  <UserBlock lastName={i.lastName} imageUrl={i.imageUrl} firstName={i.firstName} />
+                  <UserBlock
+                    lastName={item.lastName}
+                    imageUrl={item.imageUrl}
+                    firstName={item.firstName}
+                  />
 
                   <Button
                     asChild
@@ -55,7 +80,7 @@ const UsersMultiSelect = forwardRef<HTMLButtonElement, UsersMultiSelectProps>(
                     className="border-none"
                     onKeyDown={e => {
                       if (e.key === 'Enter') {
-                        handleUnselect(i);
+                        handleUnselect(item);
                       }
                     }}
                     onMouseDown={e => {
@@ -65,7 +90,7 @@ const UsersMultiSelect = forwardRef<HTMLButtonElement, UsersMultiSelectProps>(
                     onClick={e => {
                       e.preventDefault();
                       e.stopPropagation();
-                      handleUnselect(i);
+                      handleUnselect(item);
                     }}
                   >
                     <X className="h-[16px] w-[16px] text-muted-foreground hover:text-foreground" />

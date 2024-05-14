@@ -1,17 +1,28 @@
 import { z } from 'zod';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 import { clerkClient } from '@clerk/nextjs/server';
+import { type Project } from '@prisma/client';
+
+const prepareProjectForClient = (project: Project) => ({
+  ...project,
+  particpantsIds:
+    project.particpantsIds && typeof project.particpantsIds === 'string'
+      ? (JSON.parse(project.particpantsIds) as string[])
+      : [],
+});
 
 export const projectRouter = createTRPCRouter({
   create: publicProcedure
     .input(z.object({ createdBy: z.string().min(1), name: z.string().min(1) }))
     .mutation(async ({ ctx, input }) => {
-      return ctx.db.project.create({
+      const createdProject = await ctx.db.project.create({
         data: {
           name: input.name,
           createdBy: input.createdBy,
         },
       });
+
+      return prepareProjectForClient(createdProject);
     }),
 
   getAll: publicProcedure.query(async ({ ctx }) => {
@@ -19,15 +30,7 @@ export const projectRouter = createTRPCRouter({
       orderBy: [{ isImportant: 'desc' }, { createdAt: 'desc' }],
     });
 
-    return projects.map(project => {
-      return {
-        ...project,
-        particpantsIds:
-          project.particpantsIds && typeof project.particpantsIds === 'string'
-            ? (JSON.parse(project.particpantsIds) as string[])
-            : [],
-      };
-    });
+    return projects.map(prepareProjectForClient);
   }),
 
   getProjectCreator: publicProcedure
@@ -46,13 +49,7 @@ export const projectRouter = createTRPCRouter({
       where: { id: input.id },
     });
 
-    return {
-      ...project,
-      particpantsIds:
-        project.particpantsIds && typeof project.particpantsIds === 'string'
-          ? (JSON.parse(project.particpantsIds) as string[])
-          : [],
-    };
+    return prepareProjectForClient(project);
   }),
 
   updateProject: publicProcedure
@@ -67,8 +64,8 @@ export const projectRouter = createTRPCRouter({
         participants: z.array(z.string().trim()).optional(),
       })
     )
-    .mutation(({ ctx, input }) => {
-      return ctx.db.project.update({
+    .mutation(async ({ ctx, input }) => {
+      const updatedProject = await ctx.db.project.update({
         where: { id: input.id },
         data: {
           name: input.name,
@@ -79,16 +76,20 @@ export const projectRouter = createTRPCRouter({
           particpantsIds: input.participants ? JSON.stringify(input.participants) : undefined,
         },
       });
+
+      return prepareProjectForClient(updatedProject);
     }),
 
   updateProjectCompleteStatus: publicProcedure
     .input(z.object({ id: z.number(), isCompleted: z.boolean() }))
-    .mutation(({ ctx, input }) => {
-      return ctx.db.project.update({
+    .mutation(async ({ ctx, input }) => {
+      const updatedProject = await ctx.db.project.update({
         where: { id: input.id },
         data: input.isCompleted
           ? { isCompleted: input.isCompleted, isImportant: false }
           : { isCompleted: input.isCompleted },
       });
+
+      return prepareProjectForClient(updatedProject);
     }),
 });

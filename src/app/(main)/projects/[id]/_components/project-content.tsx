@@ -22,6 +22,7 @@ import { type ClientUser } from '~/lib/models/ClientUser';
 import { api } from '~/trpc/react';
 import { ProjectDatesInfoBlock } from './project-dates-info-block';
 import { toast } from 'sonner';
+import { useState } from 'react';
 
 interface Props {
   project: Project;
@@ -57,6 +58,8 @@ const formSchema = z.object({
 export function ProjectContent(props: Props) {
   const { users, project, creatorFirstName, creatorLastName, creatorImageUrl } = props;
 
+  const [currentProject, setCurrentProject] = useState<Project>(project);
+
   const router = useRouter();
 
   const updateProject = api.project.updateProject.useMutation({
@@ -67,7 +70,7 @@ export function ProjectContent(props: Props) {
     },
   });
 
-  const getDefaultParticipants = () => {
+  const getDefaultParticipants = (project: Project) => {
     const result: UserOptionType[] = [];
 
     ((project.particpantsIds as string[]) ?? []).forEach(participantId => {
@@ -89,24 +92,32 @@ export function ProjectContent(props: Props) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: project.name,
-      description: project.description ?? '',
-      startDate: project.startDate ?? undefined,
-      endDate: project.endDate ?? undefined,
-      participants: getDefaultParticipants(),
+      name: currentProject.name,
+      description: currentProject.description ?? '',
+      startDate: currentProject.startDate ?? undefined,
+      endDate: currentProject.endDate ?? undefined,
+      participants: getDefaultParticipants(currentProject),
     },
   });
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values.participants);
-
-    await updateProject.mutateAsync({
-      id: project.id,
+    const updatedProject = await updateProject.mutateAsync({
+      id: currentProject.id,
       name: values.name,
       endDate: values.endDate,
       startDate: values.startDate,
       description: values.description,
       participants: values.participants.map(p => p.id),
+    });
+
+    setCurrentProject(updatedProject);
+
+    form.reset({
+      name: updatedProject.name,
+      description: updatedProject.description ?? '',
+      startDate: updatedProject.startDate ?? undefined,
+      endDate: updatedProject.endDate ?? undefined,
+      participants: getDefaultParticipants(updatedProject),
     });
   };
 
@@ -121,7 +132,7 @@ export function ProjectContent(props: Props) {
     <Form {...form}>
       <form className="flex flex-col gap-4 p-4" onSubmit={form.handleSubmit(handleSubmit)}>
         <div className="flex flex-col gap-6">
-          <ProjectDatesInfoBlock createdAt={project.createdAt} />
+          <ProjectDatesInfoBlock createdAt={currentProject.createdAt} />
 
           <div className="flex gap-4">
             <div className="flex flex-[0.5] flex-col gap-4">
@@ -202,9 +213,11 @@ export function ProjectContent(props: Props) {
           )}
         />
 
-        <Button className="w-fit" type="submit" disabled={updateProject.isPending}>
-          Сохранить изменения
-        </Button>
+        {form.formState.isDirty && (
+          <Button className="w-fit" type="submit" disabled={updateProject.isPending}>
+            Сохранить изменения
+          </Button>
+        )}
       </form>
     </Form>
   );

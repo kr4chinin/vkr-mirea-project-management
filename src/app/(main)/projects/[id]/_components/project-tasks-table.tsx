@@ -68,7 +68,7 @@ export function ProjectTasksTable(props: Props) {
                       setProjectTasks={setProjectTasks}
                     />
 
-                    <DeleteTaskButtonWithAlert id={t.id} setProjectTasks={setProjectTasks}/>
+                    <DeleteTaskButtonWithAlert id={t.id} setProjectTasks={setProjectTasks} />
                   </div>
                 </TableCell>
                 <TableCell>{t.startDate ? formatDate(t.startDate, 'dd.MM.yyyy') : null}</TableCell>

@@ -5,7 +5,7 @@ import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TaskStatus, type Task } from '@prisma/client';
 import { redirect, useRouter } from 'next/navigation';
-import { useState, type ReactNode } from 'react';
+import { type Dispatch, type SetStateAction, useState, type ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
@@ -52,14 +52,16 @@ interface Props {
   projectId: number;
   button: ReactNode;
   task?: Task;
+  setProjectTasks: Dispatch<SetStateAction<Task[]>>;
 }
 
 export function ProjectTaskDialog(props: Props) {
-  const { projectId, task, button } = props;
+  const { projectId, task, button, setProjectTasks } = props;
 
   const router = useRouter();
-
   const { user } = useUser();
+
+  const [opened, setOpened] = useState(false);
 
   const createTask = api.task.createTask.useMutation({
     onSuccess: () => {
@@ -69,16 +71,15 @@ export function ProjectTaskDialog(props: Props) {
     },
   });
 
-  const changeTaskIsCompleteState = api.task.changeTaskIsCompletedState.useMutation({
+  const changeTaskIsCompletedState = api.task.changeTaskIsCompletedState.useMutation({
     onSuccess: () => {
       router.refresh();
 
-      toast.success(
-        task?.isCompleted ? 'Задача успешно сделана активной' : 'Задача успешно выполнена',
-        {
-          icon: task?.isCompleted ? '✅' : '🎉',
-        }
-      );
+      const isCompleted = task?.isCompleted;
+
+      toast.success(isCompleted ? 'Задача успешно сделана активной' : 'Задача успешно выполнена', {
+        icon: isCompleted ? '✅' : '🎉',
+      });
     },
   });
 
@@ -90,7 +91,14 @@ export function ProjectTaskDialog(props: Props) {
     },
   });
 
-  const [opened, setOpened] = useState(false);
+  const handleResetFormAfterMutation = (task: Task) =>
+    form.reset({
+      name: task.name,
+      description: task.description ?? '',
+      startDate: task.startDate ?? undefined,
+      endDate: task.endDate ?? undefined,
+      status: task.status,
+    });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -105,7 +113,7 @@ export function ProjectTaskDialog(props: Props) {
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     if (task) {
-      await updateTask.mutateAsync({
+      const updatedTask = await updateTask.mutateAsync({
         id: task.id,
         name: values.name,
         description: values.description,
@@ -113,10 +121,13 @@ export function ProjectTaskDialog(props: Props) {
         endDate: values.endDate,
         status: values.status,
       });
+
+      setProjectTasks(prev => prev.map(t => (t.id === updatedTask.id ? updatedTask : t)));
+      handleResetFormAfterMutation(updatedTask);
     } else {
       if (!user) redirect(RoutePath[AppRoutes.SIGN_IN]);
 
-      await createTask.mutateAsync({
+      const createdTask = await createTask.mutateAsync({
         projectId,
         name: values.name,
         createdBy: user.id,
@@ -126,7 +137,8 @@ export function ProjectTaskDialog(props: Props) {
         status: values.status,
       });
 
-      form.reset();
+      setProjectTasks(prev => [createdTask, ...prev]);
+      handleResetFormAfterMutation(createdTask);
     }
   };
 
@@ -134,7 +146,13 @@ export function ProjectTaskDialog(props: Props) {
     if (!task) throw new Error('Task does not exist yet, failed to change isComplete state');
 
     await handleSubmit(form.getValues());
-    await changeTaskIsCompleteState.mutateAsync({ id: task.id, isCompleted: !task.isCompleted });
+    const updatedTask = await changeTaskIsCompletedState.mutateAsync({
+      id: task.id,
+      isCompleted: !task.isCompleted,
+    });
+
+    setProjectTasks(prev => prev.map(t => (t.id === updatedTask.id ? updatedTask : t)));
+    handleResetFormAfterMutation(updatedTask);
 
     setOpened(false);
   };

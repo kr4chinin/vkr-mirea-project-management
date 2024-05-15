@@ -16,6 +16,8 @@ import { DeleteTaskButtonWithAlert } from './delete-task-button-with-alert';
 import { ProjectTaskDialog } from './project-task-dialog';
 import { Badge, type BadgeVariant } from '~/components/ui/badge';
 import { ScrollArea } from '~/components/ui/scroll-area';
+import { useState } from 'react';
+import { CreateProjectTaskDialog } from './create-project-task-dialog';
 
 interface Props {
   projectId: number;
@@ -34,46 +36,53 @@ const badgeVariantMap: Record<TaskStatus, BadgeVariant['variant']> = {
 export function ProjectTasksTable(props: Props) {
   const { projectId, tasks } = props;
 
+  const [projectTasks, setProjectTasks] = useState(tasks);
+
   return (
-    <ScrollArea className="h-full">
-      <Table>
-        {!tasks.length && <TableCaption>В этом проекте пока нет задач.</TableCaption>}
+    <div className="flex h-full flex-col gap-4 overflow-y-auto">
+      <CreateProjectTaskDialog projectId={projectId} setProjectTasks={setProjectTasks} />
 
-        <TableHeader>
-          <TableRow>
-            <TableHead>Название задачи</TableHead>
-            <TableHead>Дата начала</TableHead>
-            <TableHead>Дата окончания</TableHead>
-            <TableHead>Статус</TableHead>
-          </TableRow>
-        </TableHeader>
+      <ScrollArea className="h-full">
+        <Table>
+          {!projectTasks.length && <TableCaption>В этом проекте пока нет задач.</TableCaption>}
 
-        <TableBody>
-          {tasks.map(t => (
-            <TableRow className="group" key={t.id}>
-              <TableCell>
-                <div className="flex items-center gap-2">
-                  <ProjectTaskDialog
-                    task={t}
-                    key={t.id}
-                    projectId={projectId}
-                    button={<div className="hover:cursor-pointer hover:underline">{t.name}</div>}
-                  />
-
-                  <DeleteTaskButtonWithAlert id={t.id} />
-                </div>
-              </TableCell>
-              <TableCell>{t.startDate ? formatDate(t.startDate, 'dd.MM.yyyy') : null}</TableCell>
-              <TableCell>{t.endDate ? formatDate(t.endDate, 'dd.MM.yyyy') : null}</TableCell>
-              <TableCell>
-                <Badge variant={badgeVariantMap[t.status]}>
-                  {getReadableTaskStatusLabel(t.status)}
-                </Badge>
-              </TableCell>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Название задачи</TableHead>
+              <TableHead>Дата начала</TableHead>
+              <TableHead>Дата окончания</TableHead>
+              <TableHead>Статус</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </ScrollArea>
+          </TableHeader>
+
+          <TableBody>
+            {projectTasks.map(t => (
+              <TableRow className="group" key={t.id}>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <ProjectTaskDialog
+                      task={t}
+                      key={t.id}
+                      projectId={projectId}
+                      button={<div className="hover:cursor-pointer hover:underline">{t.name}</div>}
+                      setProjectTasks={setProjectTasks}
+                    />
+
+                    <DeleteTaskButtonWithAlert id={t.id} setProjectTasks={setProjectTasks}/>
+                  </div>
+                </TableCell>
+                <TableCell>{t.startDate ? formatDate(t.startDate, 'dd.MM.yyyy') : null}</TableCell>
+                <TableCell>{t.endDate ? formatDate(t.endDate, 'dd.MM.yyyy') : null}</TableCell>
+                <TableCell>
+                  <Badge variant={badgeVariantMap[t.status]}>
+                    {getReadableTaskStatusLabel(t.status)}
+                  </Badge>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </ScrollArea>
+    </div>
   );
 }

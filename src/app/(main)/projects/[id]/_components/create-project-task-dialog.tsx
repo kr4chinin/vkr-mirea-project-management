@@ -3,13 +3,16 @@
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { Button } from '~/components/ui/button';
 import { ProjectTaskDialog } from './project-task-dialog';
+import { type Task } from '@prisma/client';
+import { type Dispatch, type SetStateAction } from 'react';
 
 interface Props {
   projectId: number;
+  setProjectTasks: Dispatch<SetStateAction<Task[]>>;
 }
 
 export function CreateProjectTaskDialog(props: Props) {
-  const { projectId } = props;
+  const { projectId, setProjectTasks } = props;
 
   return (
     <ProjectTaskDialog
@@ -22,6 +25,7 @@ export function CreateProjectTaskDialog(props: Props) {
           Добавить проектную задачу
         </Button>
       }
+      setProjectTasks={setProjectTasks}
     />
   );
 }

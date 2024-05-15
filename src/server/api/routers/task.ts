@@ -38,6 +38,8 @@ export const taskRouter = createTRPCRouter({
           endDate: input.endDate,
           projectId: input.projectId,
           status: input.status,
+          isCompleted: input.status === TaskStatus.DONE,
+          completionDate: input.status === TaskStatus.DONE ? new Date() : null,
         },
       });
     }),

@@ -28,6 +28,7 @@ import {
   FormMessage,
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
+import { ScrollArea } from '~/components/ui/scroll-area';
 import {
   Select,
   SelectContent,
@@ -161,7 +162,7 @@ export function ProjectTaskDialog(props: Props) {
     <Dialog open={opened} onOpenChange={setOpened}>
       <DialogTrigger asChild>{button}</DialogTrigger>
 
-      <DialogContent className="max-w-[540px]">
+      <DialogContent className="max-h-[600px] max-w-[540px] overflow-hidden">
         <DialogHeader>
           <DialogTitle>{task ? 'Внесите изменения в задачу' : 'Создайте задачу'}</DialogTitle>
           <DialogDescription>
@@ -180,92 +181,101 @@ export function ProjectTaskDialog(props: Props) {
               setOpened(false);
             }}
           >
-            <FormField
-              name="name"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem className="flex flex-col gap-1">
-                  <FormLabel>Название задачи</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Введите название задачи" {...field} />
-                  </FormControl>
+            <ScrollArea className="max-h-[440px] w-full">
+              <div className="flex flex-1 flex-col gap-4 p-2">
+                <FormField
+                  name="name"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col gap-1">
+                      <FormLabel>Название задачи</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Введите название задачи" {...field} />
+                      </FormControl>
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            <div className="flex gap-4">
-              <FormField
-                name="startDate"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem className="flex flex-col gap-1">
-                    <FormLabel>Начало задачи</FormLabel>
-                    <FormControl>
-                      <DatePicker selected={field.value} onSelect={field.onChange} />
-                    </FormControl>
+                <div className="flex gap-4">
+                  <FormField
+                    name="startDate"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col gap-1">
+                        <FormLabel>Начало задачи</FormLabel>
+                        <FormControl>
+                          <DatePicker selected={field.value} onSelect={field.onChange} />
+                        </FormControl>
 
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-              <FormField
-                name="endDate"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem className="flex flex-col gap-1">
-                    <FormLabel>Окончание задачи</FormLabel>
-                    <FormControl>
-                      <DatePicker selected={field.value} onSelect={field.onChange} />
-                    </FormControl>
+                  <FormField
+                    name="endDate"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col gap-1">
+                        <FormLabel>Окончание задачи</FormLabel>
+                        <FormControl>
+                          <DatePicker selected={field.value} onSelect={field.onChange} />
+                        </FormControl>
 
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
 
-            <FormField
-              name="status"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem className="flex flex-col gap-1">
-                  <FormLabel>Статус задачи</FormLabel>
+                <FormField
+                  name="status"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col gap-1">
+                      <FormLabel>Статус задачи</FormLabel>
 
-                  <FormControl>
-                    <Select value={field.value} onValueChange={field.onChange}>
-                      <SelectTrigger className="w-[240px]">
-                        <SelectValue placeholder="Выберите статус" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {Object.values(TaskStatus).map(status => (
-                          <SelectItem key={status} value={status}>
-                            {getReadableTaskStatusLabel(status)}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+                      <FormControl>
+                        <Select value={field.value} onValueChange={field.onChange}>
+                          <SelectTrigger className="w-[240px]">
+                            <SelectValue placeholder="Выберите статус" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {Object.values(TaskStatus).map(status => (
+                              <SelectItem key={status} value={status}>
+                                {getReadableTaskStatusLabel(status)}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
 
-            <FormField
-              name="description"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem className="flex flex-col gap-1">
-                  <FormLabel>Описание задачи</FormLabel>
-                  <FormControl>
-                    <Textarea rows={6} placeholder="Введите описание задачи" {...field} />
-                  </FormControl>
+                <FormField
+                  name="description"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col gap-1">
+                      <FormLabel>Описание задачи</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          rows={6}
+                          className="max-h-[300px]"
+                          placeholder="Введите описание задачи"
+                          {...field}
+                        />
+                      </FormControl>
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </ScrollArea>
 
             <div className="flex items-center gap-2">
               {task && (

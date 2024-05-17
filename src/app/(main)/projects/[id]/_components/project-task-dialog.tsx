@@ -113,6 +113,8 @@ export function ProjectTaskDialog(props: Props) {
   });
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (!user) redirect(RoutePath[AppRoutes.SIGN_IN]);
+
     if (task) {
       const updatedTask = await updateTask.mutateAsync({
         id: task.id,
@@ -126,8 +128,6 @@ export function ProjectTaskDialog(props: Props) {
       setProjectTasks(prev => prev.map(t => (t.id === updatedTask.id ? updatedTask : t)));
       handleResetFormAfterMutation(updatedTask);
     } else {
-      if (!user) redirect(RoutePath[AppRoutes.SIGN_IN]);
-
       const createdTask = await createTask.mutateAsync({
         projectId,
         name: values.name,
@@ -139,7 +139,7 @@ export function ProjectTaskDialog(props: Props) {
       });
 
       setProjectTasks(prev => [createdTask, ...prev]);
-      handleResetFormAfterMutation(createdTask);
+      form.reset();
     }
   };
 

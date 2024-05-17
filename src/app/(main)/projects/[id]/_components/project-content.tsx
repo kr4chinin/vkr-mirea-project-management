@@ -20,7 +20,7 @@ import {
 import { Textarea } from '~/components/ui/textarea';
 import { UserBlock } from '~/components/ui/user-block';
 import { UsersMultiSelect, type UserOptionType } from '~/components/ui/users-multiselect';
-import { type ClientUser } from '~/lib/models/ClientUser';
+import { type ClientUser } from '~/lib/models/client-user';
 import { api } from '~/trpc/react';
 import { ProjectDatesInfoBlock } from './project-dates-info-block';
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
-import { type ProjectTasksBurndownData } from '~/lib/models/ProjectTasksBurndownData';
+import { type ProjectTasksBurndownData } from '~/lib/models/project-tasks-burndown-data';
 import { suppressDefaultPropsWarning } from '~/lib/utils';
 
 suppressDefaultPropsWarning();

@@ -3,7 +3,7 @@
 import { SignedIn, UserButton, useUser } from '@clerk/nextjs';
 import { BellIcon, CubeIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import { AppRoutes, RoutePath } from '~/config/routeConfig';
+import { AppRoutes, RoutePath } from '~/config/route-config';
 
 export function Header() {
   const { isSignedIn } = useUser();

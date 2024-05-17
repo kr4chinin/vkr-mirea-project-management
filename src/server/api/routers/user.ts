@@ -1,6 +1,6 @@
 import { clerkClient } from '@clerk/nextjs/server';
+import { type ClientUser } from '~/lib/models/client-user';
 import { createTRPCRouter, publicProcedure } from '../trpc';
-import { type ClientUser } from '~/lib/models/ClientUser';
 
 export const userRouter = createTRPCRouter({
   getAll: publicProcedure.query(async (): Promise<ClientUser[]> => {

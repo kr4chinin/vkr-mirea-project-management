@@ -2,7 +2,7 @@ import { Squares2X2Icon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { Badge } from '~/components/ui/badge';
 import { H3 } from '~/components/ui/typography/h3';
-import { AppRoutes, DynamicRoutePath } from '~/config/routeConfig';
+import { AppRoutes, DynamicRoutePath } from '~/config/route-config';
 import { api } from '~/trpc/server';
 
 export async function OverdueProjects() {

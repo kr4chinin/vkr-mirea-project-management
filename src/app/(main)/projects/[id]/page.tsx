@@ -1,7 +1,7 @@
 import { type Params } from 'next/dist/shared/lib/router/utils/route-matcher';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { H2 } from '~/components/ui/typography/h2';
-import { ProjectTab } from '~/lib/models/ProjectTab';
+import { ProjectTab } from '~/lib/models/project-tab';
 import { api } from '~/trpc/server';
 import { Subheader } from '../../_components/subheader';
 import { ProjectCompleteButton } from './_components/project-complete-button';

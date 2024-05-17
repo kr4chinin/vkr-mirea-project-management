@@ -10,14 +10,14 @@ import {
   QuestionMarkCircleIcon,
   Squares2X2Icon,
 } from '@heroicons/react/24/outline';
-import { SidebarGroup } from './sidebar-group';
-import { SidebarItem } from './sidebar-item';
-import { CreateProjectDialog } from './create-project-dialog';
 import { type Project } from '@prisma/client';
 import { useParams, usePathname } from 'next/navigation';
-import { AppRoutes, DynamicRoutePath, RoutePath } from '~/config/routeConfig';
-import { ProjectImportantMark } from './project-important-mark';
 import { ScrollArea } from '~/components/ui/scroll-area';
+import { AppRoutes, DynamicRoutePath, RoutePath } from '~/config/route-config';
+import { CreateProjectDialog } from './create-project-dialog';
+import { ProjectImportantMark } from './project-important-mark';
+import { SidebarGroup } from './sidebar-group';
+import { SidebarItem } from './sidebar-item';
 
 interface Props {
   projects: Project[];

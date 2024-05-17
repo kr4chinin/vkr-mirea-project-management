@@ -1,9 +1,9 @@
-import { z } from 'zod';
-import { createTRPCRouter, publicProcedure } from '../trpc';
-import { differenceInDays, format } from 'date-fns';
 import { clerkClient } from '@clerk/nextjs/server';
+import { differenceInDays, format } from 'date-fns';
 import { ru } from 'date-fns/locale';
-import { type ProjectTasksBurndownData } from '~/lib/models/ProjectTasksBurndownData';
+import { z } from 'zod';
+import { type ProjectTasksBurndownData } from '~/lib/models/project-tasks-burndown-data';
+import { createTRPCRouter, publicProcedure } from '../trpc';
 
 export const analyticsRouter = createTRPCRouter({
   getProjectMonitoringStats: publicProcedure

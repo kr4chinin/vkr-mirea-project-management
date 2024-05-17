@@ -5,7 +5,7 @@ import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TaskStatus, type Task } from '@prisma/client';
 import { redirect, useRouter } from 'next/navigation';
-import { type Dispatch, type SetStateAction, useState, type ReactNode } from 'react';
+import { useState, type Dispatch, type ReactNode, type SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
@@ -37,7 +37,7 @@ import {
   SelectValue,
 } from '~/components/ui/select';
 import { Textarea } from '~/components/ui/textarea';
-import { AppRoutes, RoutePath } from '~/config/routeConfig';
+import { AppRoutes, RoutePath } from '~/config/route-config';
 import { cn, getReadableTaskStatusLabel } from '~/lib/utils';
 import { api } from '~/trpc/react';
 

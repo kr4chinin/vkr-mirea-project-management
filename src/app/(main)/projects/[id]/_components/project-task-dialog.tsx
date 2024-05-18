@@ -19,14 +19,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '~/components/ui/dialog';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '~/components/ui/form';
+import { Form, FormField } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import {
@@ -40,6 +33,7 @@ import { Textarea } from '~/components/ui/textarea';
 import { AppRoutes, RoutePath } from '~/config/route-config';
 import { cn, getReadableTaskStatusLabel } from '~/lib/utils';
 import { api } from '~/trpc/react';
+import { ProjectTaskDialogFormItem } from './project-task-dialog-form-item';
 
 const formSchema = z.object({
   name: z.string().min(1, { message: 'Необходимо указать название задачи' }),
@@ -187,14 +181,9 @@ export function ProjectTaskDialog(props: Props) {
                   name="name"
                   control={form.control}
                   render={({ field }) => (
-                    <FormItem className="flex flex-col gap-1">
-                      <FormLabel>Название задачи</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Введите название задачи" {...field} />
-                      </FormControl>
-
-                      <FormMessage />
-                    </FormItem>
+                    <ProjectTaskDialogFormItem label="Название задачи">
+                      <Input placeholder="Введите название задачи" {...field} />
+                    </ProjectTaskDialogFormItem>
                   )}
                 />
 
@@ -203,14 +192,9 @@ export function ProjectTaskDialog(props: Props) {
                     name="startDate"
                     control={form.control}
                     render={({ field }) => (
-                      <FormItem className="flex flex-col gap-1">
-                        <FormLabel>Начало задачи</FormLabel>
-                        <FormControl>
-                          <DatePicker selected={field.value} onSelect={field.onChange} />
-                        </FormControl>
-
-                        <FormMessage />
-                      </FormItem>
+                      <ProjectTaskDialogFormItem label="Начало задачи">
+                        <DatePicker selected={field.value} onSelect={field.onChange} />
+                      </ProjectTaskDialogFormItem>
                     )}
                   />
 
@@ -218,14 +202,9 @@ export function ProjectTaskDialog(props: Props) {
                     name="endDate"
                     control={form.control}
                     render={({ field }) => (
-                      <FormItem className="flex flex-col gap-1">
-                        <FormLabel>Окончание задачи</FormLabel>
-                        <FormControl>
-                          <DatePicker selected={field.value} onSelect={field.onChange} />
-                        </FormControl>
-
-                        <FormMessage />
-                      </FormItem>
+                      <ProjectTaskDialogFormItem label="Окончание задачи">
+                        <DatePicker selected={field.value} onSelect={field.onChange} />
+                      </ProjectTaskDialogFormItem>
                     )}
                   />
                 </div>
@@ -234,24 +213,20 @@ export function ProjectTaskDialog(props: Props) {
                   name="status"
                   control={form.control}
                   render={({ field }) => (
-                    <FormItem className="flex flex-col gap-1">
-                      <FormLabel>Статус задачи</FormLabel>
-
-                      <FormControl>
-                        <Select value={field.value} onValueChange={field.onChange}>
-                          <SelectTrigger className="w-[240px]">
-                            <SelectValue placeholder="Выберите статус" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {Object.values(TaskStatus).map(status => (
-                              <SelectItem key={status} value={status}>
-                                {getReadableTaskStatusLabel(status)}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                    </FormItem>
+                    <ProjectTaskDialogFormItem label="Статус задачи">
+                      <Select value={field.value} onValueChange={field.onChange}>
+                        <SelectTrigger className="w-[240px]">
+                          <SelectValue placeholder="Выберите статус" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Object.values(TaskStatus).map(status => (
+                            <SelectItem key={status} value={status}>
+                              {getReadableTaskStatusLabel(status)}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </ProjectTaskDialogFormItem>
                   )}
                 />
 
@@ -259,19 +234,14 @@ export function ProjectTaskDialog(props: Props) {
                   name="description"
                   control={form.control}
                   render={({ field }) => (
-                    <FormItem className="flex flex-col gap-1">
-                      <FormLabel>Описание задачи</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          rows={6}
-                          className="max-h-[300px]"
-                          placeholder="Введите описание задачи"
-                          {...field}
-                        />
-                      </FormControl>
-
-                      <FormMessage />
-                    </FormItem>
+                    <ProjectTaskDialogFormItem label="Описание задачи">
+                      <Textarea
+                        rows={6}
+                        className="max-h-[300px]"
+                        placeholder="Введите описание задачи"
+                        {...field}
+                      />
+                    </ProjectTaskDialogFormItem>
                   )}
                 />
               </div>
@@ -298,7 +268,7 @@ export function ProjectTaskDialog(props: Props) {
                 </Button>
               )}
 
-              <Button className="flex-1" type="submit" disabled={createTask.isPending}>
+              <Button className="flex flex-1" type="submit" disabled={createTask.isPending}>
                 {task ? 'Сохранить задачу' : 'Создать задачу'}
               </Button>
             </div>

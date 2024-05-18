@@ -14,14 +14,14 @@ export type UserOptionType = Record<'id' | 'imageUrl' | 'firstName' | 'lastName'
 interface UsersMultiSelectProps {
   options: UserOptionType[];
   selected: UserOptionType[];
-  onChange: Dispatch<SetStateAction<UserOptionType[]>>;
   className?: string;
   placeholder?: string;
+  onChange: Dispatch<SetStateAction<UserOptionType[]>>;
 }
 
 // https://github.com/shadcn-ui/ui/issues/66
 const UsersMultiSelect = forwardRef<HTMLButtonElement, UsersMultiSelectProps>(
-  ({ options, selected, onChange, className, ...props }, ref) => {
+  ({ options, selected, className, onChange, ...props }, ref) => {
     const [open, setOpen] = useState(false);
 
     const handleUnselect = (item: UserOptionType) => {

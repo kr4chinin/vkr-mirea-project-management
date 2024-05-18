@@ -1,7 +1,6 @@
 'use client';
 
 import * as CollapsiblePrimitive from '@radix-ui/react-collapsible';
-import * as React from 'react';
 import { type ComponentPropsWithoutRef, type ElementRef, forwardRef } from 'react';
 import { cn } from '~/lib/utils';
 

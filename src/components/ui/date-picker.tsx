@@ -26,6 +26,7 @@ export function DatePicker(props: Props) {
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
+
           {selected ? formatDate(selected, 'dd.MM.yyyy') : <span>Выберите дату</span>}
         </Button>
       </PopoverTrigger>

@@ -11,6 +11,24 @@ const config = {
     'plugin:@typescript-eslint/stylistic-type-checked',
   ],
   rules: {
+    'padding-line-between-statements': [
+      'warn',
+      {
+        blankLine: 'always',
+        prev: '*',
+        next: ['return', 'if', 'do', 'while', 'for', 'switch', 'try', 'with'],
+      },
+      {
+        blankLine: 'always',
+        prev: ['if', 'do', 'while', 'for', 'switch', 'try', 'with'],
+        next: '*',
+      },
+      {
+        blankLine: 'any',
+        prev: ['const', 'let', 'var'],
+        next: ['if', 'do', 'while', 'for', 'switch', 'try', 'with'],
+      },
+    ],
     'no-redeclare': 0,
     'react/button-has-type': 1,
     '@typescript-eslint/no-redeclare': 0,

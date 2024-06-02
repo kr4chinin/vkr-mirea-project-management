@@ -29,17 +29,17 @@
 #### Логическая модель (в нотации Crow's Foot)
 
 - TO-BE:
-  <img width="600" alt="Логическая модель Crow's Foot TO-BE – drawio" src="https://github.com/kr4chinin/vkr-mirea-project-management/assets/103210607/acbbff20-db06-46f6-8b9f-522ad9b8eac6">
+<img width="600" alt="Логическая модель Crow's Foot TO-BE – drawio" src="https://github.com/kr4chinin/vkr-mirea-project-management/assets/103210607/acbbff20-db06-46f6-8b9f-522ad9b8eac6">
 
 #### Физическая модель
 
 Визуализация Prizma-схемы выполнена при помощи веб-приложения [prizmalizer](https://prismaliser.app/).
 
 - TO-BE:
-  <img width="600" alt="Физическая модель TO-BE – Prizmalizer" src="https://github.com/kr4chinin/vkr-mirea-project-management/assets/103210607/fffa7806-a7ce-42d7-806b-ea441c4cf2d5">
+<img width="600" alt="Физическая модель TO-BE – Prizmalizer" src="https://github.com/kr4chinin/vkr-mirea-project-management/assets/103210607/fffa7806-a7ce-42d7-806b-ea441c4cf2d5">
 
 - AS-IS:
-  <img width="600" alt="Физическая модель AS-IS – Prizmalizer" src="https://github.com/kr4chinin/vkr-mirea-project-management/assets/103210607/ff91a50b-48fd-483b-8dd2-4e51a0801051">
+<img width="600" alt="Физическая модель AS-IS – Prizmalizer" src="https://github.com/kr4chinin/vkr-mirea-project-management/assets/103210607/ff91a50b-48fd-483b-8dd2-4e51a0801051">
 
 ### Дерево функций и сценарий диалога
 
